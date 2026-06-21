@@ -407,7 +407,7 @@ textarea.input{resize:vertical;min-height:64px;}
       <div class="logo">💪</div>
       <div>
         <div class="bn">GlowUp Men</div>
-        <div class="bs">Bulking · UL × PPL</div>
+        <div class="bs">Bulking · PPL × UL</div>
       </div>
     </div>
     <nav class="side-nav">
@@ -920,9 +920,10 @@ function renderSchedule(){
 /* =========================================================
    PANDUAN
 ========================================================= */
-let guideType='pull';
+let guideType='upper';
+const GUIDE_ORDER=['upper','lower','push','pull','legs'];
 function renderGuideTabs(){
-  document.getElementById('guideTabs').innerHTML=Object.keys(TYPES).map(k=>
+  document.getElementById('guideTabs').innerHTML=GUIDE_ORDER.map(k=>
     `<button class="subtab ${k===guideType?'active':''}" data-gt="${k}">${TYPES[k].label}</button>`).join('');
   document.querySelectorAll('#guideTabs .subtab').forEach(b=>b.addEventListener('click',()=>{guideType=b.dataset.gt;renderGuideTabs();renderGuide();}));
 }
