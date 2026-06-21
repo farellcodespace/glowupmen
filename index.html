@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>GlowUp Mena</title>
+<title>GlowUp Men</title>
 <meta name="description" content="Jadwal gym PPL×UL, tracker latihan, panduan gizi & glow up dalam satu aplikasi.">
 
 <!-- PWA -->
@@ -585,11 +585,11 @@ textarea.input{resize:vertical;min-height:64px;}
       <div class="field"><label>Tanggal</label><input type="date" class="input" id="mDate"></div>
       <div class="field"><label>Jenis sesi</label>
         <select class="input" id="mType">
-          <option value="pull">Pull — Back & Biceps</option>
-          <option value="push">Push — Chest, Shoulders & Triceps</option>
-          <option value="upper">Upper — Full Upper Body</option>
-          <option value="lower">Lower — Hamstring, Glutes & Core</option>
-          <option value="legs">Legs & Abs — Quad Heavy</option>
+          <option value="upper">Senin — Upper</option>
+          <option value="lower">Selasa — Lower</option>
+          <option value="push">Kamis — Push</option>
+          <option value="pull">Jumat — Pull</option>
+          <option value="legs">Sabtu — Legs & Abs</option>
         </select>
       </div>
       <div class="label" style="margin:14px 0 8px;font-weight:600;color:var(--text);">Latihan</div>
@@ -615,24 +615,24 @@ const TYPES = {
   pull:  {label:'Pull',  focus:'Back & Biceps',                   cls:'b-pull',  tcls:'t-pull'},
   push:  {label:'Push',  focus:'Chest, Shoulders & Triceps',      cls:'b-push',  tcls:'t-push'},
   upper: {label:'Upper', focus:'Full Upper Body',                 cls:'b-upper', tcls:'t-upper'},
-  lower: {label:'Lower', focus:'Hamstring, Glutes & Core',        cls:'b-lower', tcls:'t-lower'},
+  lower: {label:'Lower', focus:'Hamstring Heavy, Glutes & Core',  cls:'b-lower', tcls:'t-lower'},
   legs:  {label:'Legs & Abs', focus:'Quad Heavy',                 cls:'b-legs',  tcls:'t-legs'},
 };
 // weekday: 0 Sun ... 6 Sat
-const SCHEDULE = {0:'rest',1:'pull',2:'push',3:'rest',4:'upper',5:'lower',6:'legs'};
+const SCHEDULE = {0:'rest',1:'upper',2:'lower',3:'rest',4:'push',5:'pull',6:'legs'};
 const DAY_ID = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 
 const uni = "Mulai kanan dulu, lalu kiri beban sama.";
 const WORKOUTS = {
   pull:[
-    {n:"Lat Pulldown",eq:"Cable machine",m:"Upperback & Lats",c:true,rec:"1 warmup + 3×8–10 rep",
-     how:"Duduk dengan paha terkunci di bawah pad. Tarik bar ke arah dada bagian atas sambil membuka dada, lalu turunkan perlahan dengan kontrol penuh.",
-     tip:"Bayangkan menarik siku ke saku belakang, bukan menarik dengan tangan.",
-     why:"Vertical pull membangun lebar punggung (V-taper). Lat bekerja maksimal saat ter-stretch di posisi atas — prinsip Nippard soal tension di posisi memanjang."},
-    {n:"Seated Cable Row",eq:"Cable machine",m:"Mid Back",c:true,rec:"1 warmup + 3×10 rep",
-     how:"Duduk tegak, tarik handle ke perut bagian bawah sambil meremas tulang belikat. Kembalikan dengan kontrol hingga lengan lurus untuk stretch penuh.",
-     tip:"Jaga dada tegak, jangan mengayun pakai punggung bawah.",
-     why:"Horizontal row menambah ketebalan mid-back. Range of motion penuh memberi stimulus di seluruh rentang gerak."},
+    {n:"Lat Pulldown Wide Grip",eq:"Cable machine",m:"Lats",c:true,rec:"1 warmup + 3×8–10 rep",
+     how:"Grip lebih lebar dari bahu, tarik bar ke dada atas, turunkan dengan kontrol.",
+     tip:"Hindari mengayun; jaga torso tegak.",
+     why:"Grip lebar menekankan lebar lat untuk V-taper."},
+    {n:"Wide Grip Cable Row",eq:"Cable machine",m:"Upperback",c:true,rec:"1 warmup + 3×10 rep",
+     how:"Pakai bar lebar, tarik ke arah dada atas dengan siku melebar, remas upper back.",
+     tip:"Siku tinggi menargetkan upper back & rear delt.",
+     why:"Grip lebar menggeser fokus ke upper back, melengkapi row sempit."},
     {n:"Cable Pullover",eq:"Cable machine",m:"Lower Lats",c:false,rec:"3×12 rep",
      how:"Berdiri sedikit membungkuk, pegang bar lurus, tarik dari atas ke arah paha dengan lengan hampir lurus. Fokus kontraksi lat.",
      tip:"Kunci siku sedikit menekuk; rasakan lat yang bekerja, bukan triceps.",
@@ -641,28 +641,32 @@ const WORKOUTS = {
      how:"Set cable setinggi wajah, tarik tali ke arah dahi sambil memutar pergelangan keluar. Tahan sebentar di kontraksi.",
      tip:"Pakai beban ringan; prioritaskan kualitas gerakan & rear delt.",
      why:"Nippard merekomendasikan facepull untuk kesehatan bahu dan rear delt yang sering tertinggal."},
-    {n:"Incline Dumbbell Curl",eq:"Dumbbell + incline bench",m:"Biceps",c:false,u:true,rec:"3×10–12 rep",
-     how:"Bersandar di incline bench, biarkan lengan menggantung ke bawah untuk stretch biceps. Curl dumbbell ke atas tanpa menggerakkan siku. "+uni,
-     tip:"Jaga siku tetap di belakang badan untuk stretch maksimal.",
-     why:"Posisi incline menempatkan biceps pada stretch dalam — variasi curl yang sangat dianjurkan Nippard untuk pertumbuhan."},
+    {n:"Bayesian Curl",eq:"Cable machine",m:"Biceps",c:false,u:true,rec:"3×12 rep",
+     how:"Hadap menjauh dari cable rendah, lengan tertarik ke belakang badan untuk stretch, lalu curl ke atas. "+uni,
+     tip:"Biarkan lengan tertarik ke belakang di bawah untuk stretch maksimal.",
+     why:"Stretch biceps + tension konstan — salah satu variasi curl terbaik versi Nippard."},
     {n:"Cable Curl",eq:"Cable machine",m:"Biceps",c:false,u:true,rec:"3×12 rep",
      how:"Berdiri menyamping dari cable, curl handle ke arah bahu sambil menjaga tension konstan. "+uni,
      tip:"Cable menjaga tension di seluruh range — jangan biarkan beban jatuh bebas.",
      why:"Resistance cable yang konstan melengkapi dumbbell yang lemah di puncak gerakan."},
+    {n:"Cable Wrist Curl",eq:"Cable machine",m:"Forearm",c:false,rec:"2×15 rep",
+     how:"Pegang bar rendah, tekuk pergelangan ke atas lalu turunkan perlahan.",
+     tip:"Range kecil, fokus kontraksi forearm.",
+     why:"Melatih forearm langsung untuk grip & estetika lengan bawah."},
   ],
   push:[
     {n:"Iso-Lateral Chest Press",eq:"Machine",m:"Middle Chest",c:true,rec:"1 warmup + 3×8–10 rep",
      how:"Atur sandaran tegak, dorong handle ke depan hingga hampir lurus lalu kembali dengan kontrol. Jaga bahu menempel ke pad.",
      tip:"Turunkan beban perlahan; rasakan stretch di dada.",
      why:"Mesin iso-lateral menstabilkan gerakan sehingga dada bekerja maksimal tanpa risiko keseimbangan — ideal untuk pemula."},
-    {n:"Incline Dumbbell Press",eq:"Dumbbell + incline bench",m:"Upper Chest",c:true,rec:"1 warmup + 3×10 rep",
-     how:"Set bench ~30°, dorong dumbbell ke atas hingga hampir bertemu, turunkan setinggi dada dengan kontrol.",
-     tip:"Sudut 30° cukup; terlalu tinggi memindahkan beban ke bahu.",
-     why:"Upper chest sering tertinggal; incline press menargetkannya langsung — favorit Nippard untuk dada atas."},
     {n:"Pec Deck",eq:"Machine",m:"Full Chest (isolation)",c:false,rec:"3×10–12 rep",
      how:"Atur handle setinggi dada, dekatkan kedua lengan di depan dada dengan gerakan memeluk, lalu buka perlahan untuk stretch.",
      tip:"Tahan 1 detik di posisi tertutup untuk kontraksi puncak.",
      why:"Isolasi murni dada dengan stretch yang aman — pelengkap pressing untuk volume tambahan."},
+    {n:"Dumbbell Fly (flat bench)",eq:"Dumbbell + flat bench",m:"Full Chest",c:false,rec:"3×12 rep",
+     how:"Berbaring datar, buka lengan melebar dengan siku sedikit menekuk hingga stretch, lalu peluk kembali ke atas.",
+     tip:"Jangan terlalu berat; prioritaskan stretch yang aman.",
+     why:"Fly memberi stretch dada yang dalam — stimulus pertumbuhan dari posisi memanjang."},
     {n:"Shoulder Press Machine (Plates)",eq:"Machine",m:"Front Delts",c:true,rec:"1 warmup + 3×10 rep",
      how:"Duduk tegak, dorong handle ke atas hingga hampir lurus, turunkan setinggi telinga dengan kontrol.",
      tip:"Jangan kunci siku keras di atas; jaga tension.",
@@ -681,42 +685,42 @@ const WORKOUTS = {
      why:"Melatih lateral & medial head triceps dengan tension konstan."},
   ],
   upper:[
-    {n:"Seated Decline Press (Smith)",eq:"Smith machine",m:"Low Chest",c:true,rec:"1 warmup + 3×10 rep",
-     how:"Pada bench decline / smith, dorong beban dari dada bawah ke atas, kembali dengan kontrol.",
-     tip:"Fokus jalur turun ke dada bawah, bukan tengah.",
-     why:"Menargetkan lower chest agar dada penuh dari atas ke bawah."},
-    {n:"Dumbbell Fly (flat bench)",eq:"Dumbbell + flat bench",m:"Full Chest (isolation)",c:false,rec:"3×12 rep",
-     how:"Berbaring datar, buka lengan melebar dengan siku sedikit menekuk hingga stretch, lalu peluk kembali ke atas.",
-     tip:"Jangan terlalu berat; prioritaskan stretch yang aman.",
-     why:"Fly memberi stretch dada yang dalam — stimulus pertumbuhan dari posisi memanjang."},
-    {n:"Wide Grip Cable Row",eq:"Cable machine",m:"Upperback",c:true,rec:"1 warmup + 3×10 rep",
-     how:"Pakai bar lebar, tarik ke arah dada atas dengan siku melebar, remas upper back.",
-     tip:"Siku tinggi menargetkan upper back & rear delt.",
-     why:"Grip lebar menggeser fokus ke upper back, melengkapi row sempit."},
-    {n:"Lat Pulldown Wide Grip",eq:"Cable machine",m:"Lats",c:true,rec:"3×10–12 rep",
-     how:"Grip lebih lebar dari bahu, tarik bar ke dada atas, turunkan dengan kontrol.",
-     tip:"Hindari mengayun; jaga torso tegak.",
-     why:"Grip lebar menekankan lebar lat untuk V-taper."},
+    {n:"Iso-Lateral Chest Press",eq:"Machine",m:"Middle Chest",c:true,rec:"1 warmup + 3×8–10 rep",
+     how:"Atur sandaran tegak, dorong handle ke depan hingga hampir lurus lalu kembali dengan kontrol. Jaga bahu menempel ke pad.",
+     tip:"Turunkan beban perlahan; rasakan stretch di dada.",
+     why:"Mesin iso-lateral menstabilkan gerakan sehingga dada bekerja maksimal tanpa risiko keseimbangan — ideal untuk pemula."},
+    {n:"Incline Dumbbell Press",eq:"Dumbbell + incline bench",m:"Upper Chest",c:true,rec:"1 warmup + 3×10 rep",
+     how:"Set bench ~30°, dorong dumbbell ke atas hingga hampir bertemu, turunkan setinggi dada dengan kontrol.",
+     tip:"Sudut 30° cukup; terlalu tinggi memindahkan beban ke bahu.",
+     why:"Upper chest sering tertinggal; incline press menargetkannya langsung — favorit Nippard untuk dada atas."},
+    {n:"Lat Pulldown",eq:"Cable machine",m:"Upperback & Lats",c:true,rec:"1 warmup + 3×8–10 rep",
+     how:"Duduk dengan paha terkunci di bawah pad. Tarik bar ke arah dada bagian atas sambil membuka dada, lalu turunkan perlahan dengan kontrol penuh.",
+     tip:"Bayangkan menarik siku ke saku belakang, bukan menarik dengan tangan.",
+     why:"Vertical pull membangun lebar punggung (V-taper). Lat bekerja maksimal saat ter-stretch di posisi atas — prinsip Nippard soal tension di posisi memanjang."},
+    {n:"Seated Cable Row",eq:"Cable machine",m:"Mid Back",c:true,rec:"1 warmup + 3×10 rep",
+     how:"Duduk tegak, tarik handle ke perut bagian bawah sambil meremas tulang belikat. Kembalikan dengan kontrol hingga lengan lurus untuk stretch penuh.",
+     tip:"Jaga dada tegak, jangan mengayun pakai punggung bawah.",
+     why:"Horizontal row menambah ketebalan mid-back. Range of motion penuh memberi stimulus di seluruh rentang gerak."},
+    {n:"Shoulder Press Machine (Plates)",eq:"Machine",m:"Front Delts",c:true,rec:"1 warmup + 3×10 rep",
+     how:"Duduk tegak, dorong handle ke atas hingga hampir lurus, turunkan setinggi telinga dengan kontrol.",
+     tip:"Jangan kunci siku keras di atas; jaga tension.",
+     why:"Overhead press melatih front delt; versi mesin lebih aman untuk progressive overload pemula."},
     {n:"Single Arm Cable Lateral Raise",eq:"Cable machine",m:"Side Delts",c:false,u:true,rec:"3×15 rep",
      how:"Berdiri menyamping, angkat handle ke samping setinggi bahu dengan lengan sedikit menekuk. "+uni,
-     tip:"Pimpin dengan siku; kontrol turunnya.",
-     why:"Tension konstan cable optimal untuk side delt."},
+     tip:"Pimpin dengan siku, bukan tangan; kontrol fase turunnya.",
+     why:"Cable memberi tension konstan — Nippard menilainya unggul dari dumbbell untuk side delt."},
     {n:"Facepull",eq:"Cable machine",m:"Rear Delts",c:false,rec:"3×15 rep",
-     how:"Set cable setinggi wajah, tarik tali ke arah dahi sambil memutar pergelangan keluar. Tahan di kontraksi.",
-     tip:"Beban ringan, kualitas gerakan dulu.",
-     why:"Menjaga kesehatan bahu & mengisi rear delt."},
-    {n:"Bayesian Curl",eq:"Cable machine",m:"Biceps",c:false,u:true,rec:"3×12 rep",
-     how:"Hadap menjauh dari cable rendah, lengan tertarik ke belakang badan untuk stretch, lalu curl ke atas. "+uni,
-     tip:"Biarkan lengan tertarik ke belakang di bawah untuk stretch maksimal.",
-     why:"Stretch biceps + tension konstan — salah satu variasi curl terbaik versi Nippard."},
-    {n:"Triceps Pushdown",eq:"Cable machine",m:"Triceps",c:false,rec:"3×12 rep",
-     how:"Dorong bar ke bawah hingga lengan lurus, tahan kontraksi, kembali dengan kontrol.",
-     tip:"Siku menempel di sisi badan.",
-     why:"Tension konstan untuk lateral & medial head triceps."},
-    {n:"Cable Wrist Curl",eq:"Cable machine",m:"Forearm",c:false,rec:"2×15 rep",
-     how:"Pegang bar rendah, tekuk pergelangan ke atas lalu turunkan perlahan.",
-     tip:"Range kecil, fokus kontraksi forearm.",
-     why:"Melatih forearm langsung untuk grip & estetika lengan bawah."},
+     how:"Set cable setinggi wajah, tarik tali ke arah dahi sambil memutar pergelangan keluar. Tahan sebentar di kontraksi.",
+     tip:"Pakai beban ringan; prioritaskan kualitas gerakan & rear delt.",
+     why:"Nippard merekomendasikan facepull untuk kesehatan bahu dan rear delt yang sering tertinggal."},
+    {n:"Overhead Cable Triceps Extension",eq:"Cable machine",m:"Triceps Long Head",c:false,rec:"3×12 rep",
+     how:"Hadap menjauh dari cable, tali di belakang kepala, luruskan lengan ke atas-depan lalu tekuk kembali untuk stretch.",
+     tip:"Jaga siku tetap tinggi dan sempit.",
+     why:"Posisi overhead meregangkan long head triceps — Nippard memberi tier-S karena stretch maksimal."},
+    {n:"Incline Dumbbell Curl",eq:"Dumbbell + incline bench",m:"Biceps",c:false,u:true,rec:"3×10–12 rep",
+     how:"Bersandar di incline bench, biarkan lengan menggantung ke bawah untuk stretch biceps. Curl dumbbell ke atas tanpa menggerakkan siku. "+uni,
+     tip:"Jaga siku tetap di belakang badan untuk stretch maksimal.",
+     why:"Posisi incline menempatkan biceps pada stretch dalam — variasi curl yang sangat dianjurkan Nippard untuk pertumbuhan."},
   ],
   lower:[
     {n:"Leg Press (high foot)",eq:"Machine",m:"Hamstrings & Glutes",c:true,rec:"1 warmup + 3×10 rep",
@@ -1339,8 +1343,15 @@ init();
 
 /* PWA service worker */
 if('serviceWorker' in navigator){
+  // Saat SW baru mengambil alih, reload sekali agar konten terbaru tampil.
+  let reloaded=false;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{
+    if(reloaded)return; reloaded=true; location.reload();
+  });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('/sw.js').catch(()=>{/* offline cache optional */});
+    navigator.serviceWorker.register('/sw.js').then(reg=>{
+      reg.update(); // cek versi SW baru tiap kunjungan; skipWaiting di sw.js yang mengaktifkannya
+    }).catch(()=>{/* offline cache optional */});
   });
 }
 </script>
