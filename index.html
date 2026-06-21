@@ -399,8 +399,21 @@ textarea.input{resize:vertical;min-height:64px;}
 /* ============ MODAL ============ */
 .overlay{position:fixed;inset:0;z-index:90;background:rgba(15,12,30,.45);backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;}
 .overlay.show{display:flex;animation:fade .2s;}
-.sheet{background:var(--bg);width:100%;max-width:560px;max-height:92vh;border-radius:22px 22px 0 0;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);animation:slideup .3s cubic-bezier(.22,1,.36,1);}
+.sheet{background:var(--bg);width:100%;max-width:560px;max-height:92vh;border-radius:22px 22px 0 0;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);animation:slideup .34s cubic-bezier(.22,1,.36,1);will-change:transform;}
 @keyframes slideup{from{transform:translateY(100%);}to{transform:none;}}
+.overlay.closing{animation:fadeout .24s ease forwards;}
+.overlay.closing .sheet{animation:slidedown .24s cubic-bezier(.4,0,1,1) forwards;}
+@keyframes fadeout{to{opacity:0;}}
+@keyframes slidedown{to{transform:translateY(100%);}}
+@keyframes rowin{from{opacity:0;transform:translateY(-5px);}to{opacity:1;transform:none;}}
+.setrow.rowin{animation:rowin .2s ease;}
+.exblock.rowin{animation:rowin .26s cubic-bezier(.22,1,.36,1);}
+.setrow,.mini,.linkbtn,.exblock{transition:background .15s,border-color .15s;}
+.rest-rec{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--accent-ink);background:var(--accent-soft);border-radius:8px;padding:6px 10px;margin-bottom:10px;transition:filter .15s,transform .12s;}
+.rest-rec:hover{filter:brightness(.97);}
+.rest-rec:active{transform:scale(.97);}
+.draft-note{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--accent-ink);background:var(--accent-soft);border-radius:10px;padding:9px 12px;margin-bottom:12px;}
+.draft-note button{margin-left:auto;font-size:11px;font-weight:700;color:var(--accent-ink);background:var(--surface);border:1px solid var(--border-2);border-radius:8px;padding:5px 10px;}
 .sheet-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--border);}
 .rtimer{display:flex;align-items:center;gap:8px;padding:10px 18px;border-bottom:1px solid var(--border);background:var(--surface);}
 .rtimer .rt-ico{font-size:15px;}
@@ -929,7 +942,6 @@ textarea.input{resize:vertical;min-height:64px;}
         <button data-sec="90">90s</button>
         <button data-sec="120">120s</button>
       </div>
-      <button class="rt-stop" id="rtAuto" title="Auto-start rest setelah set kerja" style="width:auto;padding:0 9px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:4px;"><span class="ic" data-ic="zap" data-sz="13"></span>Auto</button>
       <button class="rt-stop" id="rtStop" aria-label="Stop timer">✕</button>
     </div>
     <div class="sheet-body">
@@ -944,6 +956,7 @@ textarea.input{resize:vertical;min-height:64px;}
         </select>
       </div>
       <div class="label" style="margin:14px 0 8px;font-weight:600;color:var(--text);">Latihan</div>
+      <div id="draftNote"></div>
       <div id="mExercises"></div>
       <div class="addex-row">
         <input type="text" class="input" id="mNewEx" placeholder="Tambah latihan lain…">
@@ -1179,6 +1192,7 @@ const START_W=69, TARGET_W=78;
 let sessions = LS.get('gum_sessions',[]);
 let weights  = LS.get('gum_weights',[]);
 let measures = LS.get('gum_measures',[]);
+let drafts   = LS.get('gum_drafts',{}); // draft catat-latihan per tanggal (auto-save)
 let calRef   = new Date();
 let selDate  = null;
 
@@ -2022,13 +2036,18 @@ function setRowHTML(label,reps,weight){
     <div class="sb ${wu?'wu':'ws'}">${label}</div>
     <input class="mini r" type="number" inputmode="numeric" placeholder="reps" value="${reps||''}">
     <input class="mini w" type="number" inputmode="decimal" placeholder="kg" value="${weight||''}">
-    <button class="delset" onclick="this.closest('.setrow').remove();relabel(this)">✕</button>
+    <button class="delset" onclick="delRow(this)">✕</button>
   </div>`;
 }
+function restFor(name){ // saran istirahat berbasis tipe gerakan
+  return exCompound(name) ? {label:'2–3 menit',sec:180} : {label:'60–90 detik',sec:90};
+}
 function exBlockHTML(name,sets,hint){
+  const r=restFor(name);
   return `<div class="exblock">
-    <div class="exblock-head"><span class="en">${esc(name)}</span><button class="rm" onclick="this.closest('.exblock').remove()" aria-label="Hapus gerakan" style="display:inline-flex;align-items:center;">${svg('trash',16)}</button></div>
+    <div class="exblock-head"><span class="en">${esc(name)}</span><button class="rm" onclick="this.closest('.exblock').remove();draftDirty()" aria-label="Hapus gerakan" style="display:inline-flex;align-items:center;">${svg('trash',16)}</button></div>
     ${hint?`<div class="exhint">↩︎ Diisi dari sesi ${hint} — tinggal sesuaikan</div>`:''}
+    <button type="button" class="rest-rec" onclick="rtStart(${r.sec})" title="Ketuk untuk mulai timer">${svg('timer',13)}Istirahat ~${r.label} · ketuk untuk mulai</button>
     <div class="setrow-h"><span>Set</span><span>Reps</span><span>Berat</span><span></span></div>
     <div class="sets">${sets.map(s=>setRowHTML(s.label,s.reps,s.weight)).join('')}</div>
     <div class="set-actions">
@@ -2036,6 +2055,13 @@ function exBlockHTML(name,sets,hint){
       <button class="linkbtn" onclick="addSet(this,'S')">+ Set</button>
     </div>
   </div>`;
+}
+function delRow(btn){ // hapus 1 set, lalu re-label & simpan draft
+  const block=btn.closest('.exblock');
+  btn.closest('.setrow').remove();
+  const any=block&&block.querySelector('.setrow');
+  if(any)relabel(any);
+  draftDirty();
 }
 function relabel(node){
   const block=node.closest('.exblock'); if(!block)return;
@@ -2050,10 +2076,13 @@ function addSet(btn,kind){
   const block=btn.closest('.exblock');const sets=block.querySelector('.sets');
   if(kind==='WU'){
     sets.insertAdjacentHTML('afterbegin',setRowHTML('WU','',''));
+    sets.firstElementChild.classList.add('rowin');
   }else{
     sets.insertAdjacentHTML('beforeend',setRowHTML('S','',''));
+    sets.lastElementChild.classList.add('rowin');
   }
   relabel(block.querySelector('.setrow'));
+  draftDirty();
 }
 function roundTo(x,step){return Math.round(x/step)*step;}
 function topWorking(block){ // beban kerja terberat yang sudah diisi di satu exblock
@@ -2073,21 +2102,17 @@ function autoWarmup(block){ // isi WU = 50% beban kerja terberat (dibulatkan 2.5
   const top=topWorking(block);
   if(top>0){ wuW.value=roundTo(top*0.5,2.5); wuW.dataset.auto='1'; }
 }
-// satu listener terdelegasi untuk semua input set (auto-warmup + auto-rest)
+// listener terdelegasi untuk input set: auto-warmup + simpan draft otomatis
 (function(){
   const mEx=document.getElementById('mExercises');
   if(!mEx)return;
   mEx.addEventListener('input',e=>{
-    const inp=e.target; if(!(inp.classList&&inp.classList.contains('w')))return;
-    const row=inp.closest('.setrow'), block=inp.closest('.exblock'); if(!row||!block)return;
-    if(row.querySelector('.sb').classList.contains('wu')){ inp.dataset.manual='1'; } // tandai WU manual
-    else { autoWarmup(block); }
-  });
-  mEx.addEventListener('change',e=>{ // selesai isi beban set kerja → mulai rest otomatis
-    const inp=e.target; if(!(inp.classList&&inp.classList.contains('w'))||!inp.value)return;
-    const row=inp.closest('.setrow'); if(!row)return;
-    if(row.querySelector('.sb').classList.contains('wu'))return; // hanya set kerja
-    if(autoRest)rtStart(lastPreset);
+    const inp=e.target;
+    if(inp.classList&&inp.classList.contains('w')){
+      const row=inp.closest('.setrow'), block=inp.closest('.exblock');
+      if(row&&block){ if(row.querySelector('.sb').classList.contains('wu')) inp.dataset.manual='1'; else autoWarmup(block); }
+    }
+    draftDirty();
   });
 })();
 function lastSessionFor(name){
@@ -2108,36 +2133,96 @@ function loadTemplate(type){
     return exBlockHTML(e.n,sets,last?fmtShort(last.date):null);
   }).join('');
 }
+/* ---- Draft auto-save (catat latihan sementara) ---- */
+let draftTimer=null, draftTouched=false, closeTimer=null;
+function readModalDraft(){
+  const exercises=[];
+  document.querySelectorAll('#mExercises .exblock').forEach(b=>{
+    const sets=[];
+    b.querySelectorAll('.setrow').forEach(r=>{
+      sets.push({label:r.querySelector('.sb').textContent,reps:r.querySelector('.r').value,weight:r.querySelector('.w').value});
+    });
+    exercises.push({name:b.querySelector('.en').textContent,sets});
+  });
+  return {type:document.getElementById('mType').value,notes:document.getElementById('mNotes').value,exercises};
+}
+function draftHasContent(d){
+  if(d.notes&&d.notes.trim())return true;
+  return d.exercises.some(ex=>ex.sets.some(s=>s.reps||s.weight));
+}
+function saveDraft(){
+  if(!modal.classList.contains('show')||editingId||!draftTouched)return;
+  const date=document.getElementById('mDate').value; if(!date)return;
+  const d=readModalDraft();
+  if(draftHasContent(d))drafts[date]=d; else delete drafts[date];
+  LS.set('gum_drafts',drafts);
+}
+function draftDirty(){ draftTouched=true; clearTimeout(draftTimer); draftTimer=setTimeout(saveDraft,400); } // debounce
+function showDraftNote(on){
+  const el=document.getElementById('draftNote');
+  el.innerHTML = on ? `<div class="draft-note">${svg('edit',15)}<span>Melanjutkan draft tersimpan</span><button type="button" onclick="discardDraft()">Mulai ulang</button></div>` : '';
+}
+function discardDraft(){
+  const date=document.getElementById('mDate').value;
+  delete drafts[date]; LS.set('gum_drafts',drafts);
+  draftTouched=false;
+  showDraftNote(false);
+  loadTemplate(document.getElementById('mType').value);
+}
 let editingId=null;
 function openModal(date,type){
-  editingId=null;
+  editingId=null; draftTouched=false; clearTimeout(closeTimer);
+  date=date||todayStr();
   document.getElementById('modalTitle').textContent='Catat Latihan';
-  document.getElementById('mDate').value=date||todayStr();
-  document.getElementById('mType').value=type||'pull';
-  document.getElementById('mNotes').value='';
+  document.getElementById('mDate').value=date;
   document.getElementById('mNewEx').value='';
-  loadTemplate(type||'pull');
+  const d=drafts[date];
+  if(d){ // lanjutkan draft
+    document.getElementById('mType').value=d.type||type||'pull';
+    document.getElementById('mNotes').value=d.notes||'';
+    document.getElementById('mExercises').innerHTML=d.exercises.map(ex=>exBlockHTML(ex.name,ex.sets)).join('');
+    showDraftNote(true);
+  }else{
+    document.getElementById('mType').value=type||'pull';
+    document.getElementById('mNotes').value='';
+    showDraftNote(false);
+    loadTemplate(type||'pull');
+  }
+  modal.classList.remove('closing');
   modal.classList.add('show');
   document.body.style.overflow='hidden';
 }
 function openEdit(id){
   const s=sessions.find(x=>x.id===id); if(!s)return;
-  editingId=id;
+  editingId=id; draftTouched=false; clearTimeout(closeTimer);
   document.getElementById('modalTitle').textContent='Edit Latihan';
   document.getElementById('mDate').value=s.date;
   document.getElementById('mType').value=s.type;
   document.getElementById('mNotes').value=s.notes||'';
   document.getElementById('mNewEx').value='';
   document.getElementById('mExercises').innerHTML=s.exercises.map(ex=>exBlockHTML(ex.name,ex.sets)).join('');
+  showDraftNote(false);
+  modal.classList.remove('closing');
   modal.classList.add('show');
   document.body.style.overflow='hidden';
 }
-function closeModal(){modal.classList.remove('show');document.body.style.overflow='';editingId=null;rtStopTimer();}
-document.getElementById('mType').addEventListener('change',e=>loadTemplate(e.target.value));
+function closeModal(){
+  saveDraft(); // simpan progres sebelum tutup
+  modal.classList.add('closing');
+  clearTimeout(closeTimer);
+  closeTimer=setTimeout(()=>{ modal.classList.remove('show','closing'); },240);
+  document.body.style.overflow='';editingId=null;rtStopTimer();
+}
+document.getElementById('mType').addEventListener('change',e=>{ showDraftNote(false); loadTemplate(e.target.value); draftDirty(); });
+document.getElementById('mDate').addEventListener('change',draftDirty);
+document.getElementById('mNotes').addEventListener('input',draftDirty);
 document.getElementById('mAddEx').onclick=()=>{
   const inp=document.getElementById('mNewEx');const v=inp.value.trim();if(!v)return;
-  document.getElementById('mExercises').insertAdjacentHTML('beforeend',exBlockHTML(v,[{label:'S1'},{label:'S2'},{label:'S3'}]));
+  const host=document.getElementById('mExercises');
+  host.insertAdjacentHTML('beforeend',exBlockHTML(v,[{label:'S1'},{label:'S2'},{label:'S3'}]));
+  host.lastElementChild.classList.add('rowin');
   inp.value='';
+  draftDirty();
 };
 document.getElementById('mNewEx').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();document.getElementById('mAddEx').click();}});
 document.getElementById('modalClose').onclick=closeModal;
@@ -2176,6 +2261,7 @@ document.getElementById('mSave').onclick=()=>{
     sessions.push({id,date,type,exercises,notes});
   }
   LS.set('gum_sessions',sessions);
+  delete drafts[date]; LS.set('gum_drafts',drafts); draftTouched=false; // draft selesai → buang
   closeModal();
   selDate=date;
   calRef=parseKey(date);
@@ -2190,7 +2276,6 @@ document.getElementById('mSave').onclick=()=>{
    REST TIMER (di dalam modal catat latihan)
 ========================================================= */
 let rtInterval=null, rtCtx=null;
-let autoRest=LS.get('gum_autorest',true), lastPreset=90; // auto-start rest + preset terakhir
 function rtFmt(s){const m=Math.floor(s/60),ss=s%60;return m>0?(m+':'+String(ss).padStart(2,'0')):(ss+'s');}
 function rtAudio(){
   try{ if(!rtCtx)rtCtx=new (window.AudioContext||window.webkitAudioContext)();
@@ -2232,17 +2317,9 @@ function rtStart(sec){
 }
 document.querySelectorAll('.rt-presets button').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.rt-presets button').forEach(x=>x.classList.toggle('active',x===b));
-  lastPreset=+b.dataset.sec;
-  rtStart(lastPreset);
+  rtStart(+b.dataset.sec);
 }));
 document.getElementById('rtStop').onclick=rtStopTimer;
-function updateAutoBtn(){
-  const b=document.getElementById('rtAuto'); if(!b)return;
-  b.style.background=autoRest?'var(--accent-soft)':'var(--surface-2)';
-  b.style.color=autoRest?'var(--accent-ink)':'var(--faint)';
-  b.style.borderColor=autoRest?'transparent':'var(--border-2)';
-}
-document.getElementById('rtAuto').onclick=()=>{ autoRest=!autoRest; LS.set('gum_autorest',autoRest); updateAutoBtn(); };
 
 /* =========================================================
    INIT
@@ -2258,7 +2335,6 @@ function init(){
   renderCalendar();renderDayDetail();
   document.getElementById('wDate').value=todayStr();
   document.getElementById('meDate').value=todayStr();
-  updateAutoBtn();
   matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{if(!LS.get('gum_theme',null))applyTheme();});
   const savedPage=LS.get('gum_page','jadwal'); // kembali ke halaman terakhir setelah refresh
   go(PAGE_META[savedPage]?savedPage:'jadwal');
