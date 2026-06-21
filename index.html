@@ -8,7 +8,7 @@
 
 <!-- PWA -->
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#6C47FF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#2F6BFF" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0E0E14" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -22,7 +22,7 @@
 
 /* ============ TOKENS ============ */
 :root{
-  --accent:#6C47FF; --accent-d:#5836E0; --accent-soft:#EFEBFF; --accent-ink:#4A2FC0;
+  --accent:#2F6BFF; --accent-d:#1E50E0; --accent-soft:#E9EFFF; --accent-ink:#1E47C8;
   --bg:#F7F7FB; --surface:#FFFFFF; --surface-2:#FBFBFE;
   --text:#16161E; --muted:#6B6B80; --faint:#9A9AAE;
   --border:#ECECF2; --border-2:#E2E2EC;
@@ -32,14 +32,14 @@
   --pink:#DB2777; --pink-soft:#FCE9F2;
   --red:#DC2626; --red-soft:#FCEBEB;
   --shadow:0 1px 2px rgba(20,20,40,.04), 0 6px 20px rgba(20,20,40,.06);
-  --shadow-lg:0 8px 40px rgba(40,30,100,.18);
+  --shadow-lg:0 8px 40px rgba(20,45,110,.20);
   --r:16px; --r-sm:12px; --r-xs:9px;
   --nav-h:64px;
   --display:"Archivo Expanded","Inter",-apple-system,sans-serif;
 }
 @media (prefers-color-scheme:dark){
   :root{
-    --accent:#8B6FFF; --accent-d:#7A5CF5; --accent-soft:rgba(139,111,255,.16); --accent-ink:#B6A2FF;
+    --accent:#5B8DFF; --accent-d:#4178F5; --accent-soft:rgba(91,141,255,.16); --accent-ink:#A9C2FF;
     --bg:#0E0E14; --surface:#191922; --surface-2:#15151D;
     --text:#F1F1F6; --muted:#9A9AB0; --faint:#6C6C80;
     --border:#272733; --border-2:#30303E;
@@ -53,7 +53,7 @@
   }
 }
 html[data-theme="light"]{
-  --accent:#6C47FF; --accent-d:#5836E0; --accent-soft:#EFEBFF; --accent-ink:#4A2FC0;
+  --accent:#2F6BFF; --accent-d:#1E50E0; --accent-soft:#E9EFFF; --accent-ink:#1E47C8;
   --bg:#F7F7FB; --surface:#FFFFFF; --surface-2:#FBFBFE;
   --text:#16161E; --muted:#6B6B80; --faint:#9A9AAE; --border:#ECECF2; --border-2:#E2E2EC;
   --green:#16A34A; --green-soft:#E7F8ED; --orange:#EA580C; --orange-soft:#FEF0E6;
@@ -61,7 +61,7 @@ html[data-theme="light"]{
   --red:#DC2626; --red-soft:#FCEBEB; --shadow:0 1px 2px rgba(20,20,40,.04), 0 6px 20px rgba(20,20,40,.06);
 }
 html[data-theme="dark"]{
-  --accent:#8B6FFF; --accent-d:#7A5CF5; --accent-soft:rgba(139,111,255,.16); --accent-ink:#B6A2FF;
+  --accent:#5B8DFF; --accent-d:#4178F5; --accent-soft:rgba(91,141,255,.16); --accent-ink:#A9C2FF;
   --bg:#0E0E14; --surface:#191922; --surface-2:#15151D;
   --text:#F1F1F6; --muted:#9A9AB0; --faint:#6C6C80; --border:#272733; --border-2:#30303E;
   --green:#34D399; --green-soft:rgba(52,211,153,.13); --orange:#FB923C; --orange-soft:rgba(251,146,60,.14);
@@ -1718,7 +1718,7 @@ function drawWeightChart(){
   cv.width=cssW*dpr; cv.height=cssH*dpr;
   const ctx=cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,cssW,cssH);
   const cs=getComputedStyle(document.documentElement), col=n=>(cs.getPropertyValue(n)||'').trim();
-  const cAccent=col('--accent')||'#6C47FF', cMuted=col('--muted')||'#888', cBorder=col('--border-2')||'#ddd',
+  const cAccent=col('--accent')||'#2F6BFF', cMuted=col('--muted')||'#888', cBorder=col('--border-2')||'#ddd',
         cGreen=col('--green')||'#16a34a', cSurface=col('--surface')||'#fff';
   const padL=32,padR=14,padT=16,padB=22, plotW=cssW-padL-padR, plotH=cssH-padT-padB;
   const vals=sorted.map(w=>w.weight);
@@ -1945,7 +1945,7 @@ function drawSpark(cv,vals){
   cv.width=w*dpr; cv.height=h*dpr;
   const ctx=cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,w,h);
   if(vals.length<2)return;
-  const col=(getComputedStyle(document.documentElement).getPropertyValue('--accent')||'#6C47FF').trim();
+  const col=(getComputedStyle(document.documentElement).getPropertyValue('--accent')||'#2F6BFF').trim();
   let mn=Math.min(...vals), mx=Math.max(...vals); if(mx===mn){mx+=1;mn-=1;}
   const pad=3, X=i=>pad+(w-2*pad)*i/(vals.length-1), Y=v=>pad+(h-2*pad)*(1-(v-mn)/(mx-mn));
   ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.lineJoin='round'; ctx.beginPath();
