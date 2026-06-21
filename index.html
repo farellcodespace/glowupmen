@@ -95,6 +95,11 @@ input,select,textarea{outline:none;}
 /* ikon SVG */
 .ni svg,#themeIcoSide svg{vertical-align:middle;}
 .icon-btn svg{display:block;}
+.ic{display:inline-flex;align-items:center;justify-content:center;vertical-align:-.16em;}
+.ic-svg{display:block;}
+.tag-new{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.5px;color:var(--accent-ink);background:var(--accent-soft);padding:2px 7px;border-radius:99px;vertical-align:1px;}
+.tab .ic,.subtab .ic{margin-right:5px;}
+.btn .ic{vertical-align:-.18em;}
 
 /* ============ LAYOUT ============ */
 .layout{display:flex;min-height:100vh;}
@@ -512,7 +517,7 @@ textarea.input{resize:vertical;min-height:64px;}
         <div id="heroToday"></div>
         <div id="streakCard"></div>
         <div class="notebox">
-          <span class="ni">🎯</span>
+          <span class="ni" data-ic="target"></span>
           <p><b>Fase bulking</b> · 180cm · 69 → 78kg. Beginner (2 minggu efektif). Pakai <b>RIR 1–2</b> untuk 4–6 minggu pertama, fokus form & progressive overload.</p>
         </div>
         <div id="scheduleList"></div>
@@ -521,11 +526,11 @@ textarea.input{resize:vertical;min-height:64px;}
       <!-- ===================== TRACKER ===================== -->
       <section id="page-tracker" class="page">
         <div class="tabs" id="trackerTabs">
-          <button class="tab active" data-tt="cal">📅 Kalender</button>
-          <button class="tab" data-tt="weight">⚖️ Berat</button>
-          <button class="tab" data-tt="overload">📈 Progres</button>
-          <button class="tab" data-tt="volume">💪 Volume</button>
-          <button class="tab" data-tt="measures">📏 Ukuran</button>
+          <button class="tab active" data-tt="cal"><span class="ic" data-ic="jadwal" data-sz="16"></span>Kalender</button>
+          <button class="tab" data-tt="weight"><span class="ic" data-ic="scale" data-sz="16"></span>Berat</button>
+          <button class="tab" data-tt="overload"><span class="ic" data-ic="trend" data-sz="16"></span>Progres</button>
+          <button class="tab" data-tt="volume"><span class="ic" data-ic="dumbbell" data-sz="16"></span>Volume</button>
+          <button class="tab" data-tt="measures"><span class="ic" data-ic="ruler" data-sz="16"></span>Ukuran</button>
         </div>
 
         <!-- calendar -->
@@ -569,7 +574,7 @@ textarea.input{resize:vertical;min-height:64px;}
           </div>
 
           <div class="card" id="wChartCard">
-            <div class="label" style="margin-bottom:10px;">📈 Tren berat</div>
+            <div class="label" style="margin-bottom:10px;display:flex;align-items:center;gap:7px;"><span class="ic" data-ic="trend" data-sz="15"></span>Tren berat</div>
             <div class="chart-wrap"><canvas id="wChart"></canvas></div>
           </div>
 
@@ -583,12 +588,12 @@ textarea.input{resize:vertical;min-height:64px;}
           <div class="section-title">Riwayat</div>
           <div class="card flat" id="wHistory"></div>
 
-          <div class="section-title">💾 Backup Data</div>
+          <div class="section-title"><span class="ic" data-ic="save"></span>Backup Data</div>
           <div class="card">
             <p class="micro" style="margin-bottom:12px;line-height:1.5;">Cadangkan semua data (log latihan, berat badan, pengaturan) ke satu file, atau pulihkan dari file backup. Lakukan rutin — terutama sebelum ganti HP atau membersihkan cache browser.</p>
             <div style="display:flex;gap:10px;">
-              <button class="btn btn-ghost" id="btnExport" style="flex:1;">⬇️ Export</button>
-              <button class="btn btn-ghost" id="btnImport" style="flex:1;">⬆️ Import</button>
+              <button class="btn btn-ghost" id="btnExport" style="flex:1;"><span class="ic" data-ic="arrowDown" data-sz="16"></span>Export</button>
+              <button class="btn btn-ghost" id="btnImport" style="flex:1;"><span class="ic" data-ic="arrowUp" data-sz="16"></span>Import</button>
             </div>
             <input type="file" id="importFile" accept="application/json,.json" hidden>
           </div>
@@ -597,7 +602,7 @@ textarea.input{resize:vertical;min-height:64px;}
         <!-- overload -->
         <div id="tt-overload" style="display:none;">
           <div class="notebox">
-            <span class="ni">📈</span>
+            <span class="ni" data-ic="trend"></span>
             <p>Saran otomatis: <b>+2.5kg</b> untuk gerakan compound, <b>+1.5kg</b> untuk isolasi — saat kamu bisa selesaikan semua set di RIR 1–2.</p>
           </div>
           <div id="overloadList"></div>
@@ -606,7 +611,7 @@ textarea.input{resize:vertical;min-height:64px;}
         <!-- volume per otot -->
         <div id="tt-volume" style="display:none;">
           <div class="notebox">
-            <span class="ni">💪</span>
+            <span class="ni" data-ic="dumbbell"></span>
             <p>Target <b>9 set/minggu (MEV)</b> per grup otot — riset: cukup untuk pertumbuhan maksimal pemula. Hanya <b>set kerja</b> yang dihitung (warmup tidak).</p>
           </div>
           <div id="volumeList"></div>
@@ -635,7 +640,7 @@ textarea.input{resize:vertical;min-height:64px;}
       <section id="page-panduan" class="page">
 
         <!-- Cara cari beban yang tepat -->
-        <div class="section-title" style="margin-top:4px;">🎯 Cara Menemukan Beban yang Tepat</div>
+        <div class="section-title" style="margin-top:4px;"><span class="ic" data-ic="target"></span>Cara Menemukan Beban yang Tepat</div>
         <p class="micro" style="margin:-6px 0 14px;">Panduan step-by-step berbasis science untuk pemula</p>
 
         <div class="card">
@@ -715,7 +720,7 @@ textarea.input{resize:vertical;min-height:64px;}
         </div>
 
         <!-- kalkulator plat -->
-        <div class="section-title">🧮 Kalkulator Plat</div>
+        <div class="section-title"><span class="ic" data-ic="calc"></span>Kalkulator Plat</div>
         <div class="card">
           <p class="micro" style="margin-bottom:12px;">Untuk gerakan barbell / plate-loaded. Masukkan total beban & berat bar — lihat plat yang dipasang per sisi.</p>
           <div style="display:flex;gap:10px;margin-bottom:12px;">
@@ -727,7 +732,7 @@ textarea.input{resize:vertical;min-height:64px;}
           <div id="plResult" class="micro" style="line-height:1.6;">Masukkan total beban di atas.</div>
         </div>
 
-        <div class="section-title">📖 Panduan Gerakan</div>
+        <div class="section-title"><span class="ic" data-ic="panduan"></span>Panduan Gerakan</div>
         <div class="subtabs" id="guideTabs"></div>
         <div id="guideContent"></div>
       </section>
@@ -744,30 +749,30 @@ textarea.input{resize:vertical;min-height:64px;}
           </div>
         </div>
 
-        <div class="section-title">🍽️ Jadwal makan</div>
+        <div class="section-title"><span class="ic" data-ic="utensils"></span>Jadwal makan</div>
         <div class="card">
           <div class="timeline" id="mealTimeline"></div>
         </div>
 
-        <div class="section-title">🥚 Sumber protein</div>
+        <div class="section-title"><span class="ic" data-ic="egg"></span>Sumber protein</div>
         <div class="card" id="proteinSources"></div>
 
-        <div class="section-title">💡 Tips</div>
+        <div class="section-title"><span class="ic" data-ic="bulb"></span>Tips</div>
         <div class="card">
-          <div class="tipline"><span class="ni">💧</span><p><b>Hidrasi:</b> minum <b>3–4 liter air per hari</b>, terutama saat & sesudah latihan.</p></div>
-          <div class="tipline" style="border-top:1px solid var(--border);"><span class="ni">♨️</span><p><b>Cara masak:</b> utamakan <b>rebus / kukus</b> daripada goreng untuk kontrol lemak & budget.</p></div>
-          <div class="tipline" style="border-top:1px solid var(--border);"><span class="ni">💸</span><p><b>Budget:</b> di bawah <b>Rp 50.000/hari</b> dengan masak sendiri di rumah.</p></div>
+          <div class="tipline"><span class="ni" data-ic="droplet"></span><p><b>Hidrasi:</b> minum <b>3–4 liter air per hari</b>, terutama saat & sesudah latihan.</p></div>
+          <div class="tipline" style="border-top:1px solid var(--border);"><span class="ni" data-ic="flame"></span><p><b>Cara masak:</b> utamakan <b>rebus / kukus</b> daripada goreng untuk kontrol lemak & budget.</p></div>
+          <div class="tipline" style="border-top:1px solid var(--border);"><span class="ni" data-ic="banknote"></span><p><b>Budget:</b> di bawah <b>Rp 50.000/hari</b> dengan masak sendiri di rumah.</p></div>
         </div>
       </section>
 
       <!-- ===================== GLOW UP ===================== -->
       <section id="page-glow" class="page">
         <div class="subtabs" id="glowTabs">
-          <button class="subtab active" data-glow="skin">🧴 Skincare</button>
-          <button class="subtab" data-glow="hair">💇 Rambut</button>
-          <button class="subtab" data-glow="style">👕 Style</button>
-          <button class="subtab" data-glow="habit">🌱 Kebiasaan</button>
-          <button class="subtab" data-glow="dd">⚖️ Do & Don't</button>
+          <button class="subtab active" data-glow="skin"><span class="ic" data-ic="bottle" data-sz="15"></span>Skincare</button>
+          <button class="subtab" data-glow="hair"><span class="ic" data-ic="scissors" data-sz="15"></span>Rambut</button>
+          <button class="subtab" data-glow="style"><span class="ic" data-ic="shirt" data-sz="15"></span>Style</button>
+          <button class="subtab" data-glow="habit"><span class="ic" data-ic="leaf" data-sz="15"></span>Kebiasaan</button>
+          <button class="subtab" data-glow="dd"><span class="ic" data-ic="scale" data-sz="15"></span>Do & Don't</button>
         </div>
         <div id="glowContent"></div>
       </section>
@@ -777,20 +782,20 @@ textarea.input{resize:vertical;min-height:64px;}
         <button class="btn btn-ghost btn-sm" onclick="go('jadwal')" style="margin-bottom:14px;">← Kembali</button>
 
         <div class="notebox">
-          <span class="ni">👋</span>
+          <span class="ni" data-ic="panduan"></span>
           <p>Panduan singkat semua fitur GlowUp Men. Ketuk tiap bagian untuk membuka.</p>
         </div>
 
         <div class="acc">
           <button class="acc-head" onclick="this.parentElement.classList.toggle('open')">
-            <span class="num">📅</span>
+            <span class="num ic" data-ic="jadwal" data-sz="15"></span>
             <div style="flex:1;min-width:0;"><div class="at">Jadwal</div><div class="am">Latihan mingguan & streak</div></div>
             <span class="chev">▼</span>
           </button>
           <div class="acc-body">
             <p style="font-size:13px;color:var(--text);margin-bottom:9px;">Jadwal <b>UL×PPL</b>: Senin Upper · Selasa Lower · Rabu Rest · Kamis Push · Jumat Pull · Sabtu Legs · Minggu Rest. Hari ini otomatis terbuka.</p>
             <ul style="list-style:none;display:flex;flex-direction:column;gap:7px;">
-              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Kartu Streak 🔥</b> — minggu beruntun & sesi minggu ini. <i>Contoh:</i> "🔥 3 minggu · 2/5 sesi".</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Kartu Streak</b> — minggu beruntun & sesi minggu ini. <i>Contoh:</i> "3 minggu · 2/5 sesi".</span></li>
               <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span>Ketuk kartu hari → daftar gerakan, target set/rep, tanda <b>↔</b> = gerakan tangan bergantian (kanan dulu).</span></li>
             </ul>
           </div>
@@ -798,33 +803,33 @@ textarea.input{resize:vertical;min-height:64px;}
 
         <div class="acc">
           <button class="acc-head" onclick="this.parentElement.classList.toggle('open')">
-            <span class="num">📊</span>
+            <span class="num ic" data-ic="tracker" data-sz="15"></span>
             <div style="flex:1;min-width:0;"><div class="at">Tracker</div><div class="am">Kalender, berat, progres, volume, ukuran</div></div>
             <span class="chev">▼</span>
           </button>
           <div class="acc-body">
             <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
-              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>📅 Kalender</b> — hijau = jadwal latihan, titik = sudah dicatat. Ketuk tanggal untuk catat/edit/hapus. Ikon <b>🏆</b> muncul di sesi yang pecah rekor.</span></li>
-              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>⚖️ Berat</b> — progress ke target 78kg, grafik tren, riwayat. Di sini juga <b>💾 Backup</b> (Export/Import).</span></li>
-              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>📈 Progres</b> — saran kenaikan beban otomatis. <i>Contoh:</i> "Hack Squat · +2.5kg · coba 62.5kg".</span></li>
-              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>💪 Volume</b> <span style="color:var(--accent-ink);font-weight:600;">✨ baru</span> — set kerja per otot minggu ini vs target 9. <i>Contoh:</i> "Dada 6/9 · Punggung 12/9 ✅".</span></li>
-              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>📏 Ukuran</b> <span style="color:var(--accent-ink);font-weight:600;">✨ baru</span> — lingkar lengan/dada/pinggang/paha + grafik mini. <i>Contoh:</i> "Lengan 34 → 35.5 cm ▲".</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Kalender</b> — hijau = jadwal latihan, titik = sudah dicatat. Ketuk tanggal untuk catat/edit/hapus. Badge trofi muncul di sesi yang pecah rekor.</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Berat</b> — progress ke target 78kg, grafik tren, riwayat. Di sini juga <b>Backup</b> (Export/Import).</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Progres</b> — saran kenaikan beban otomatis. <i>Contoh:</i> "Hack Squat · +2.5kg · coba 62.5kg".</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Volume</b> <span class="tag-new">BARU</span> — set kerja per otot minggu ini vs target 9. <i>Contoh:</i> "Dada 6/9 · Punggung 12/9".</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Ukuran</b> <span class="tag-new">BARU</span> — lingkar lengan/dada/pinggang/paha + grafik mini. <i>Contoh:</i> "Lengan 34 → 35.5 cm".</span></li>
             </ul>
           </div>
         </div>
 
         <div class="acc">
           <button class="acc-head" onclick="this.parentElement.classList.toggle('open')">
-            <span class="num">📝</span>
+            <span class="num ic" data-ic="edit" data-sz="15"></span>
             <div style="flex:1;min-width:0;"><div class="at">Catat Latihan</div><div class="am">Jendela saat menekan "+ Catat latihan"</div></div>
             <span class="chev">▼</span>
           </button>
           <div class="acc-body">
             <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
               <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span>Gerakan & beban <b>terisi otomatis</b> dari sesi terakhir — tinggal disesuaikan.</span></li>
-              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Auto-warmup</b> <span style="color:var(--accent-ink);font-weight:600;">✨ baru</span> — isi S1 = 60kg → baris WU otomatis 30kg (50%).</span></li>
-              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Rest timer ⚡Auto</b> <span style="color:var(--accent-ink);font-weight:600;">✨ baru</span> — selesai isi beban → timer rest jalan sendiri (bunyi + getar saat habis). Bisa dimatikan dari tombol ⚡Auto.</span></li>
-              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span>Beban lebih berat dari rekor → muncul <b>🏆 Rekor baru!</b> <span style="color:var(--accent-ink);font-weight:600;">✨ baru</span></span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Auto-warmup</b> <span class="tag-new">BARU</span> — isi S1 = 60kg → baris WU otomatis 30kg (50%).</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Rest timer Auto</b> <span class="tag-new">BARU</span> — selesai isi beban → timer rest jalan sendiri (bunyi + getar saat habis). Bisa dimatikan dari tombol Auto.</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span>Beban lebih berat dari rekor → muncul <b>Rekor baru!</b> <span class="tag-new">BARU</span></span></li>
               <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span>Bisa <b>tambah gerakan custom</b> & catatan sesi.</span></li>
             </ul>
           </div>
@@ -832,22 +837,22 @@ textarea.input{resize:vertical;min-height:64px;}
 
         <div class="acc">
           <button class="acc-head" onclick="this.parentElement.classList.toggle('open')">
-            <span class="num">📖</span>
+            <span class="num ic" data-ic="panduan" data-sz="15"></span>
             <div style="flex:1;min-width:0;"><div class="at">Panduan</div><div class="am">Cara, alasan & alat bantu</div></div>
             <span class="chev">▼</span>
           </button>
           <div class="acc-body">
             <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
-              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>🎯 Cara cari beban</b> — 5 langkah: mulai ringan → RIR → tes → progressive overload → tanda beban pas (DO/DON'T).</span></li>
-              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>🧮 Kalkulator plat</b> <span style="color:var(--accent-ink);font-weight:600;">✨ baru</span> — total 60kg, bar 20kg → "per sisi: 1 × 20kg".</span></li>
-              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>📖 Panduan gerakan</b> — tiap gerakan: cara, tips, & 🔬 kenapa efektif (alasan ilmiah).</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Cara cari beban</b> — 5 langkah: mulai ringan → RIR → tes → progressive overload → tanda beban pas (DO/DON'T).</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Kalkulator plat</b> <span class="tag-new">BARU</span> — total 60kg, bar 20kg → "per sisi: 1 × 20kg".</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Panduan gerakan</b> — tiap gerakan: cara, tips, & kenapa efektif (alasan ilmiah).</span></li>
             </ul>
           </div>
         </div>
 
         <div class="acc">
           <button class="acc-head" onclick="this.parentElement.classList.toggle('open')">
-            <span class="num">🥗</span>
+            <span class="num ic" data-ic="gizi" data-sz="15"></span>
             <div style="flex:1;min-width:0;"><div class="at">Gizi</div><div class="am">Target makro & rencana makan</div></div>
             <span class="chev">▼</span>
           </button>
@@ -862,7 +867,7 @@ textarea.input{resize:vertical;min-height:64px;}
 
         <div class="acc">
           <button class="acc-head" onclick="this.parentElement.classList.toggle('open')">
-            <span class="num">✨</span>
+            <span class="num ic" data-ic="glow" data-sz="15"></span>
             <div style="flex:1;min-width:0;"><div class="at">Glow Up</div><div class="am">Skincare, rambut, style, kebiasaan</div></div>
             <span class="chev">▼</span>
           </button>
@@ -877,14 +882,14 @@ textarea.input{resize:vertical;min-height:64px;}
 
         <div class="acc">
           <button class="acc-head" onclick="this.parentElement.classList.toggle('open')">
-            <span class="num">💾</span>
+            <span class="num ic" data-ic="save" data-sz="15"></span>
             <div style="flex:1;min-width:0;"><div class="at">Data &amp; Backup</div><div class="am">PENTING — supaya data tidak hilang</div></div>
             <span class="chev">▼</span>
           </button>
           <div class="acc-body">
             <div class="guide-block why" style="margin-bottom:0;">
-              <h5>⚠️ Wajib dibaca</h5>
-              <p>Semua datamu (log latihan, berat, ukuran, kebiasaan) tersimpan <b>hanya di HP/browser ini</b>. Data bisa hilang kalau cache dibersihkan, ganti HP, atau uninstall. Rutin <b>Export backup</b> di <b>Tracker → ⚖️ Berat → 💾 Backup</b>, dan <b>Import</b> di perangkat baru.</p>
+              <h5 style="display:flex;align-items:center;gap:6px;"><span class="ic" data-ic="alert" data-sz="14"></span>Wajib dibaca</h5>
+              <p>Semua datamu (log latihan, berat, ukuran, kebiasaan) tersimpan <b>hanya di HP/browser ini</b>. Data bisa hilang kalau cache dibersihkan, ganti HP, atau uninstall. Rutin <b>Export backup</b> di <b>Tracker → Berat → Backup</b>, dan <b>Import</b> di perangkat baru.</p>
             </div>
           </div>
         </div>
@@ -917,14 +922,14 @@ textarea.input{resize:vertical;min-height:64px;}
       <button class="x" id="modalClose" aria-label="Tutup">✕</button>
     </div>
     <div class="rtimer">
-      <span class="rt-ico">⏱️</span>
+      <span class="rt-ico ic" data-ic="timer" data-sz="16"></span>
       <span class="rt-display" id="rtDisplay">Rest</span>
       <div class="rt-presets">
         <button data-sec="60">60s</button>
         <button data-sec="90">90s</button>
         <button data-sec="120">120s</button>
       </div>
-      <button class="rt-stop" id="rtAuto" title="Auto-start rest setelah set kerja" style="width:auto;padding:0 9px;font-size:11px;font-weight:600;">⚡Auto</button>
+      <button class="rt-stop" id="rtAuto" title="Auto-start rest setelah set kerja" style="width:auto;padding:0 9px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:4px;"><span class="ic" data-ic="zap" data-sz="13"></span>Auto</button>
       <button class="rt-stop" id="rtStop" aria-label="Stop timer">✕</button>
     </div>
     <div class="sheet-body">
@@ -948,7 +953,7 @@ textarea.input{resize:vertical;min-height:64px;}
     </div>
     <div class="sheet-foot">
       <button class="btn btn-ghost" id="mCancel" style="flex:1;">Batal</button>
-      <button class="btn btn-primary" id="mSave" style="flex:2;">💾 Simpan sesi</button>
+      <button class="btn btn-primary" id="mSave" style="flex:2;"><span class="ic" data-ic="save" data-sz="16"></span>Simpan sesi</button>
     </div>
   </div>
 </div>
@@ -1221,12 +1226,46 @@ const ICON_PATHS={
   bantuan:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
   moon:'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/>',
   sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  scale:'<path d="M12 3v18M5 7h14M7 7l-4 7a4 4 0 0 0 8 0zM17 7l4 7a4 4 0 0 1-8 0zM8 21h8"/>',
+  trend:'<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>',
+  dumbbell:'<path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/>',
+  ruler:'<path d="M21.3 8.7 8.7 21.3a1 1 0 0 1-1.4 0l-4.6-4.6a1 1 0 0 1 0-1.4L15.3 2.7a1 1 0 0 1 1.4 0l4.6 4.6a1 1 0 0 1 0 1.4Z"/><path d="m7.5 10.5 2 2M10.5 7.5l2 2M13.5 4.5l2 2M4.5 13.5l2 2"/>',
+  save:'<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/>',
+  flame:'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+  trophy:'<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>',
+  edit:'<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+  target:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  calc:'<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>',
+  utensils:'<path d="M4 3v6a2 2 0 0 0 2 2 2 2 0 0 0 2-2V3M6 11v10M18 3c-1.5 1-2.5 4-2.5 7H18v11"/>',
+  egg:'<path d="M12 22c4.2 0 7-3.13 7-7 0-4.97-3.5-13-7-13S5 10.03 5 15c0 3.87 2.8 7 7 7z"/>',
+  bulb:'<path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.5.4.8 1 .8 1.6V17h6.4v-.7c0-.6.3-1.2.8-1.6A7 7 0 0 0 12 2z"/>',
+  beaker:'<path d="M4.5 3h15M6 3v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3M6 14h12"/>',
+  clipboard:'<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>',
+  trash:'<path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/>',
+  timer:'<path d="M10 2h4M12 14l3-3"/><circle cx="12" cy="14" r="8"/>',
+  zap:'<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  alert:'<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/>',
+  arrowUp:'<path d="M12 19V5M5 12l7-7 7 7"/>',
+  arrowDown:'<path d="M12 5v14M19 12l-7 7-7-7"/>',
+  droplet:'<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>',
+  bottle:'<path d="M9 3h6v3l1 2v12a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V8l1-2z"/><path d="M9 13h6"/>',
+  scissors:'<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/>',
+  shirt:'<path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>',
+  footprints:'<path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/>',
+  palette:'<circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.65-.75 1.65-1.69 0-.44-.18-.83-.44-1.12-.29-.29-.44-.65-.44-1.13a1.64 1.64 0 0 1 1.67-1.67H16c3.05 0 5.55-2.5 5.55-5.55C21.97 6.01 17.46 2 12 2z"/>',
+  bag:'<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/>',
+  leaf:'<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/>',
+  smile:'<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>',
+  banknote:'<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/>',
+  person:'<circle cx="12" cy="6" r="3"/><path d="M12 9v8M8 21l4-5 4 5"/>',
 };
-function svg(name,size){const p=ICON_PATHS[name]; if(!p)return''; return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;}
+function svg(name,size){const p=ICON_PATHS[name]; if(!p)return''; return `<svg class="ic-svg" width="${size||18}" height="${size||18}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;}
 function paintIcons(){
   document.querySelectorAll('.nav-btn').forEach(b=>{const i=b.querySelector('.ni'); if(i&&ICON_PATHS[b.dataset.page])i.innerHTML=svg(b.dataset.page,22);});
   document.querySelectorAll('.side-btn').forEach(b=>{const i=b.querySelector('.ni'); if(i&&ICON_PATHS[b.dataset.page])i.innerHTML=svg(b.dataset.page,20);});
   const hb=document.getElementById('helpBtn'); if(hb)hb.innerHTML=svg('bantuan',19);
+  document.querySelectorAll('[data-ic]').forEach(el=>{el.innerHTML=svg(el.dataset.ic,+el.dataset.sz||18);});
 }
 
 /* =========================================================
@@ -1274,7 +1313,7 @@ function renderStreak(){
   const pct=Math.min(100,Math.round(thisWeek/WEEK_GOAL*100));
   el.innerHTML=`<div class="card">
     <div class="streak-top">
-      <div class="streak-flame"><div class="num">🔥 ${streak}</div><div class="lbl">minggu beruntun</div></div>
+      <div class="streak-flame"><div class="num" style="display:flex;align-items:center;justify-content:center;gap:5px;">${svg('flame',24)}${streak}</div><div class="lbl">minggu beruntun</div></div>
       <div class="streak-week">
         <div class="label">Sesi minggu ini</div>
         <div class="wk-val"><b>${thisWeek}</b> / ${WEEK_GOAL} <small>· total ${sessions.length} sesi</small></div>
@@ -1317,7 +1356,7 @@ function renderSchedule(){
       html+=`<div class="daycard ${isToday?'today':''}">
         <div class="daycard-head" style="cursor:default;">
           <span class="accent-bar"></span>
-          <div style="flex:1;"><div class="dayname">${DAY_ID[w]}</div><div class="daytype">😴 Rest Day</div><div class="dayfocus">Recovery — istirahat penuh</div></div>
+          <div style="flex:1;"><div class="dayname">${DAY_ID[w]}</div><div class="daytype" style="display:flex;align-items:center;gap:7px;">${svg('moon',17)}Rest Day</div><div class="dayfocus">Recovery — istirahat penuh</div></div>
           ${isToday?'<span class="todaypill">Hari ini</span>':''}
         </div></div>`;
       return;
@@ -1369,14 +1408,14 @@ function renderGuide(){
       </button>
       <div class="acc-body">
         <div class="acc-meta">
-          <span class="meta-chip">🎯 ${e.m}</span>
-          <span class="meta-chip">🏋️ ${e.eq}</span>
+          <span class="meta-chip" style="display:inline-flex;align-items:center;gap:5px;">${svg('target',13)}${e.m}</span>
+          <span class="meta-chip" style="display:inline-flex;align-items:center;gap:5px;">${svg('dumbbell',13)}${e.eq}</span>
           <span class="meta-chip">${e.c?'Compound':'Isolation'}</span>
         </div>
         ${e.u?`<div class="uni-tag">↔ ${uni}</div>`:''}
-        <div class="guide-block"><h5>📋 Cara melakukan</h5><p>${e.how}</p></div>
-        <div class="guide-block"><h5>💡 Tips kunci</h5><p>${e.tip}</p></div>
-        <div class="guide-block why"><h5>🔬 Kenapa efektif</h5><p>${e.why}</p></div>
+        <div class="guide-block"><h5 style="display:flex;align-items:center;gap:6px;">${svg('clipboard',13)}Cara melakukan</h5><p>${e.how}</p></div>
+        <div class="guide-block"><h5 style="display:flex;align-items:center;gap:6px;">${svg('bulb',13)}Tips kunci</h5><p>${e.tip}</p></div>
+        <div class="guide-block why"><h5 style="display:flex;align-items:center;gap:6px;">${svg('beaker',13)}Kenapa efektif</h5><p>${e.why}</p></div>
       </div>
     </div>`).join('');
 }
@@ -1396,19 +1435,19 @@ function renderGizi(){
 ========================================================= */
 const GLOW={
   skin:`
-    <div class="section-title" style="margin-top:0;">☀️ Rutinitas Pagi</div>
+    <div class="section-title" style="margin-top:0;">${svg('sun',18)}Rutinitas Pagi</div>
     <div class="card"><div class="routine">
       <div class="rstep"><span class="rn"></span><div><div class="rt">Facewash</div><div class="rd">Bersihkan wajah dari minyak & keringat semalam</div></div></div>
       <div class="rstep"><span class="rn"></span><div><div class="rt">Moisturizer</div><div class="rd">Kunci kelembapan kulit</div></div></div>
       <div class="rstep"><span class="rn"></span><div><div class="rt">Sunscreen (min SPF 30)</div><div class="rd">Wajib tiap pagi — proteksi UV anti kusam & penuaan dini</div></div></div>
     </div></div>
-    <div class="section-title">🌙 Rutinitas Malam</div>
+    <div class="section-title">${svg('moon',18)}Rutinitas Malam</div>
     <div class="card"><div class="routine">
       <div class="rstep"><span class="rn"></span><div><div class="rt">Facewash</div><div class="rd">Angkat kotoran, debu & sunscreen seharian</div></div></div>
       <div class="rstep"><span class="rn"></span><div><div class="rt">Moisturizer</div><div class="rd">Regenerasi kulit saat tidur</div></div></div>
       <div class="rstep"><span class="rn"></span><div><div class="rt">Lip balm</div><div class="rd">Bibir lembap, tidak pecah-pecah</div></div></div>
     </div></div>
-    <div class="section-title">🛍️ Rekomendasi produk</div>
+    <div class="section-title">${svg('bag',18)}Rekomendasi produk</div>
     <div class="card">
       <div class="src-row"><span>Facewash</span><b style="color:var(--accent-ink)">Cetaphil / Hada Labo</b></div>
       <div class="src-row"><span>Moisturizer</span><b style="color:var(--accent-ink)">Hada Labo Gokujyun / Azarine</b></div>
@@ -1416,15 +1455,15 @@ const GLOW={
     </div>`,
   hair:`
     <div class="card">
-      <div class="section-title" style="margin-top:0;">🎯 Target</div>
+      <div class="section-title" style="margin-top:0;">${svg('target',18)}Target</div>
       <p style="font-size:13px;color:var(--muted);">Medium length — tidak terlalu panjang, tidak shaggy. Rapi tapi tetap natural.</p>
     </div>
-    <div class="section-title">✂️ Perawatan</div>
+    <div class="section-title">${svg('scissors',18)}Perawatan</div>
     <div class="card">
-      <div class="tipline" style="padding-top:0;"><span class="ni">✂️</span><p><b>Trim tiap 6–8 minggu</b> — cukup 0.5–1cm di ujung saja agar bentuk terjaga.</p></div>
-      <div class="tipline" style="border-top:1px solid var(--border);"><span class="ni">🧴</span><p><b>Kondisioner tiap keramas</b> — aplikasikan dari tengah ke ujung saja, hindari akar.</p></div>
+      <div class="tipline" style="padding-top:0;"><span class="ni">${svg('scissors',18)}</span><p><b>Trim tiap 6–8 minggu</b> — cukup 0.5–1cm di ujung saja agar bentuk terjaga.</p></div>
+      <div class="tipline" style="border-top:1px solid var(--border);"><span class="ni">${svg('bottle',18)}</span><p><b>Kondisioner tiap keramas</b> — aplikasikan dari tengah ke ujung saja, hindari akar.</p></div>
     </div>
-    <div class="section-title">💇 Pilihan gaya</div>
+    <div class="section-title">${svg('scissors',18)}Pilihan gaya</div>
     <div class="card"><div class="chiplist">
       <span class="tagchip">Curtain bangs</span>
       <span class="tagchip">Slicked back</span>
@@ -1432,15 +1471,15 @@ const GLOW={
     </div></div>`,
   style:`
     <div class="card">
-      <div class="section-title" style="margin-top:0;">👕 Prinsip</div>
-      <div class="tipline" style="padding-top:0;"><span class="ni">📏</span><p><b>Fit over brand</b> — baju yang pas badan selalu menang dari sekadar merek mahal.</p></div>
-      <div class="tipline" style="border-top:1px solid var(--border);"><span class="ni">👟</span><p><b>White sneakers</b> sebagai fondasi — cocok dengan hampir semua outfit.</p></div>
+      <div class="section-title" style="margin-top:0;">${svg('shirt',18)}Prinsip</div>
+      <div class="tipline" style="padding-top:0;"><span class="ni">${svg('ruler',18)}</span><p><b>Fit over brand</b> — baju yang pas badan selalu menang dari sekadar merek mahal.</p></div>
+      <div class="tipline" style="border-top:1px solid var(--border);"><span class="ni">${svg('footprints',18)}</span><p><b>White sneakers</b> sebagai fondasi — cocok dengan hampir semua outfit.</p></div>
     </div>
-    <div class="section-title">🎨 Warna netral dulu</div>
+    <div class="section-title">${svg('palette',18)}Warna netral dulu</div>
     <div class="card"><div class="chiplist">
       <span class="tagchip">Black</span><span class="tagchip">White</span><span class="tagchip">Grey</span><span class="tagchip">Navy</span><span class="tagchip">Cream</span>
     </div></div>
-    <div class="section-title">✨ Detail grooming</div>
+    <div class="section-title">${svg('glow',18)}Detail grooming</div>
     <div class="card">
       <div class="src-row"><span>Kuku</span><b style="color:var(--accent-ink)">Selalu bersih & rapi</b></div>
       <div class="src-row"><span>Alis</span><b style="color:var(--accent-ink)">Rapi, tidak berantakan</b></div>
@@ -1448,14 +1487,14 @@ const GLOW={
     </div>`,
   habit:`
     <div id="habitTracker"></div>
-    <div class="section-title">🌱 Kebiasaan harian</div>
+    <div class="section-title">${svg('leaf',18)}Kebiasaan harian</div>
     <div class="card">
-      <div class="tipline" style="padding-top:0;"><span class="ni">😴</span><p><b>Tidur 7–8 jam</b> — recovery & hormon pertumbuhan terjadi saat tidur.</p></div>
-      <div class="tipline" style="border-top:1px solid var(--border);"><span class="ni">💧</span><p><b>Minum 3–4 liter/hari</b> untuk hidrasi & kulit sehat.</p></div>
-      <div class="tipline" style="border-top:1px solid var(--border);"><span class="ni">🧍</span><p><b>Postur tegak</b> — bahu ke belakang, langsung terlihat lebih percaya diri.</p></div>
-      <div class="tipline" style="border-top:1px solid var(--border);"><span class="ni">🪥</span><p><b>Sikat gigi 2×/hari</b> — senyum bersih bagian dari glow up.</p></div>
+      <div class="tipline" style="padding-top:0;"><span class="ni">${svg('moon',18)}</span><p><b>Tidur 7–8 jam</b> — recovery & hormon pertumbuhan terjadi saat tidur.</p></div>
+      <div class="tipline" style="border-top:1px solid var(--border);"><span class="ni">${svg('droplet',18)}</span><p><b>Minum 3–4 liter/hari</b> untuk hidrasi & kulit sehat.</p></div>
+      <div class="tipline" style="border-top:1px solid var(--border);"><span class="ni">${svg('person',18)}</span><p><b>Postur tegak</b> — bahu ke belakang, langsung terlihat lebih percaya diri.</p></div>
+      <div class="tipline" style="border-top:1px solid var(--border);"><span class="ni">${svg('smile',18)}</span><p><b>Sikat gigi 2×/hari</b> — senyum bersih bagian dari glow up.</p></div>
     </div>
-    <div class="section-title">🗓️ Timeline glow up</div>
+    <div class="section-title">${svg('jadwal',18)}Timeline glow up</div>
     <div class="card">
       <div class="tl-step"><span class="tw">Minggu 1–2</span><p>Mulai rutin: skincare, tidur cukup, hidrasi. Kulit mulai lebih segar.</p></div>
       <div class="tl-step"><span class="tw">Bulan 1–2</span><p>Postur membaik, baju mulai terasa pas, otot mulai terbentuk.</p></div>
@@ -1464,9 +1503,9 @@ const GLOW={
     </div>`,
   dd:`
     <div class="subtabs" id="ddTabs">
-      <button class="subtab active" data-dd="makan">🍽️ Makan</button>
-      <button class="subtab" data-dd="gym">🏋️ Gym</button>
-      <button class="subtab" data-dd="glowup">✨ Glow Up</button>
+      <button class="subtab active" data-dd="makan"><span class="ic">${svg('utensils',15)}</span>Makan</button>
+      <button class="subtab" data-dd="gym"><span class="ic">${svg('dumbbell',15)}</span>Gym</button>
+      <button class="subtab" data-dd="glowup"><span class="ic">${svg('glow',15)}</span>Glow Up</button>
     </div>
     <div id="ddContent"></div>`,
 };
@@ -1495,12 +1534,12 @@ function renderGlow(){
   }
 }
 const HABITS=[
-  {id:'air',ic:'💧',t:'Minum 3–4 liter air'},
-  {id:'tidur',ic:'😴',t:'Tidur 7–8 jam'},
-  {id:'sunscreen',ic:'☀️',t:'Sunscreen pagi'},
-  {id:'skincare',ic:'🧴',t:'Skincare malam'},
-  {id:'gigi',ic:'🦷',t:'Sikat gigi 2×'},
-  {id:'postur',ic:'🧍',t:'Postur tegak'},
+  {id:'air',ic:svg('droplet',18),t:'Minum 3–4 liter air'},
+  {id:'tidur',ic:svg('moon',18),t:'Tidur 7–8 jam'},
+  {id:'sunscreen',ic:svg('sun',18),t:'Sunscreen pagi'},
+  {id:'skincare',ic:svg('bottle',18),t:'Skincare malam'},
+  {id:'gigi',ic:svg('smile',18),t:'Sikat gigi 2×'},
+  {id:'postur',ic:svg('person',18),t:'Postur tegak'},
 ];
 function habitData(){return LS.get('gum_habits',{});}
 function toggleHabit(id){
@@ -1523,7 +1562,7 @@ function renderHabits(){
   }
   host.innerHTML=`<div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;">
-      <div class="section-title" style="margin:0;">✅ Checklist hari ini</div>
+      <div class="section-title" style="margin:0;">${svg('check',18)}Checklist hari ini</div>
       <span class="micro"><b style="color:var(--accent-ink);font-size:14px;">${done}</b>/${HABITS.length}</span>
     </div>
     <div class="pbar" style="margin:9px 0 14px;"><i style="width:${pct}%"></i></div>
@@ -1592,7 +1631,7 @@ function renderDayDetail(){
   const logged=sessionsOn(selDate);
   let html=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px;flex-wrap:wrap;">
     <div><div class="label">${selDate===todayStr()?'Hari ini':'Tanggal dipilih'}</div><div style="font-size:15px;font-weight:600;">${fmtNice(selDate)}</div></div>`;
-  html += sched!=='rest' ? `<span class="badge ${TYPES[sched].cls}">${TYPES[sched].label}</span>` : `<span class="badge b-rest">😴 Rest</span>`;
+  html += sched!=='rest' ? `<span class="badge ${TYPES[sched].cls}">${TYPES[sched].label}</span>` : `<span class="badge b-rest">${svg('moon',12)}Rest</span>`;
   html+=`</div>`;
 
   if(logged.length){
@@ -1607,18 +1646,18 @@ function renderDayDetail(){
           </div>
         </div>`;
       s.exercises.forEach(ex=>{
-        const pr=isPR(ex,s.date,s.id)?' <span title="Rekor berat baru">🏆</span>':'';
+        const pr=isPR(ex,s.date,s.id)?` <span class="ic" title="Rekor berat baru" style="color:var(--accent-ink);vertical-align:-2px;">${svg('trophy',14)}</span>`:'';
         html+=`<div class="logged-ex"><div class="len">${esc(ex.name)}${pr}</div><div class="setline">
           ${ex.sets.map(st=>`<span class="setchip ${st.label==='WU'?'wu':''}"><b>${esc(st.label)}</b> ${esc(st.reps)||'–'}×${esc(st.weight)||'–'}${st.weight?'kg':''}</span>`).join('')}
         </div></div>`;
       });
-      if(s.notes)html+=`<div class="micro" style="margin-top:8px;background:var(--surface-2);padding:9px 11px;border-radius:9px;">📝 ${esc(s.notes)}</div>`;
+      if(s.notes)html+=`<div class="micro" style="margin-top:8px;background:var(--surface-2);padding:9px 11px;border-radius:9px;"><span class="ic" style="vertical-align:-2px;margin-right:5px;">${svg('edit',13)}</span>${esc(s.notes)}</div>`;
       html+=`</div>`;
     });
     html+=`<button class="btn btn-soft btn-block" onclick="openModal('${selDate}','${sched==='rest'?'pull':sched}')">+ Catat sesi lain</button>`;
   } else {
     html+=`<div class="empty" style="padding:24px 10px;">
-      <span class="em-ico">${sched==='rest'?'😌':'📝'}</span>
+      <span class="em-ico" style="display:inline-flex;justify-content:center;color:var(--faint);">${sched==='rest'?svg('moon',40):svg('edit',40)}</span>
       <div class="em-title">${sched==='rest'?'Hari istirahat':'Belum ada catatan'}</div>
       <div class="em-sub">${sched==='rest'?'Nikmati recovery-mu. Tetap bisa catat sesi kalau kamu latihan.':'Catat latihanmu hari ini untuk lacak progressive overload.'}</div>
     </div>`;
@@ -1647,13 +1686,13 @@ function renderWeight(){
   document.getElementById('wStatGain').innerHTML=(gain>=0?'+':'')+(+gain.toFixed(1))+'<small> kg</small>';
   setTimeout(()=>{document.getElementById('wProgress').style.width=pct+'%';},60);
   const remain=(TARGET_W-cur).toFixed(1);
-  document.getElementById('wProgressTxt').innerHTML = cur>=TARGET_W ? '🎉 Target tercapai!' : `${pct.toFixed(0)}% menuju target · kurang <b>${remain} kg</b> lagi`;
+  document.getElementById('wProgressTxt').innerHTML = cur>=TARGET_W ? `<span class="ic" style="color:var(--green);vertical-align:-2px;">${svg('trophy',14)}</span> Target tercapai!` : `${pct.toFixed(0)}% menuju target · kurang <b>${remain} kg</b> lagi`;
 
   drawWeightChart();
 
   const wrap=document.getElementById('wHistory');
   if(!sorted.length){
-    wrap.innerHTML=`<div class="empty" style="padding:24px 10px;"><span class="em-ico">⚖️</span><div class="em-title">Belum ada data</div><div class="em-sub">Catat berat badanmu rutin (mis. tiap pagi) untuk lihat tren bulking.</div></div>`;
+    wrap.innerHTML=`<div class="empty" style="padding:24px 10px;"><span class="em-ico" style="display:inline-flex;justify-content:center;color:var(--faint);">${svg('scale',40)}</span><div class="em-title">Belum ada data</div><div class="em-sub">Catat berat badanmu rutin (mis. tiap pagi) untuk lihat tren bulking.</div></div>`;
     return;
   }
   let rows='';
@@ -1821,7 +1860,7 @@ function renderOverload(){
   const names=Object.keys(map);
   const list=document.getElementById('overloadList');
   if(!names.length){
-    list.innerHTML=`<div class="empty"><span class="em-ico">📈</span><div class="em-title">Belum ada data overload</div><div class="em-sub">Catat beberapa sesi latihan di tab Kalender. Saran kenaikan beban muncul otomatis di sini.</div></div>`;
+    list.innerHTML=`<div class="empty"><span class="em-ico" style="display:inline-flex;justify-content:center;color:var(--faint);">${svg('trend',40)}</span><div class="em-title">Belum ada data overload</div><div class="em-sub">Catat beberapa sesi latihan di tab Kalender. Saran kenaikan beban muncul otomatis di sini.</div></div>`;
     return;
   }
   list.innerHTML=names.map(name=>{
@@ -1837,7 +1876,7 @@ function renderOverload(){
       <div class="oh"><div class="on">${esc(name)}</div><span class="badge ${comp?'b-pull':'b-push'}">${comp?'Compound':'Isolasi'}</span></div>
       <div class="micro">Sesi terakhir · ${fmtShort(hist[hist.length-1].date)}</div>
       <div style="font-size:13px;margin-top:4px;">${setSum||'–'}</div>
-      <div class="ol-suggest"><span>⬆️</span> Saran: <b>+${inc}kg</b> · ${sugg}</div>
+      <div class="ol-suggest"><span class="ic">${svg('arrowUp',16)}</span> Saran: <b>+${inc}kg</b> · ${sugg}</div>
       <div class="pillrow"><span class="micro" style="margin-right:2px;">Tren:</span>${pills}</div>
     </div>`;
   }).join('');
@@ -1883,15 +1922,15 @@ function renderVolume(){
     return `<div style="margin-bottom:12px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
         <span style="font-size:13px;font-weight:500;">${g.label}</span>
-        <span style="font-size:12px;font-weight:600;color:${cColor};">${c} / ${MEV} set${done?' ✅':''}</span>
+        <span style="font-size:12px;font-weight:600;color:${cColor};display:inline-flex;align-items:center;gap:3px;">${c} / ${MEV} set${done?`<span class="ic" style="color:var(--green);">${svg('check',13)}</span>`:''}</span>
       </div>
       <div class="pbar"><i style="width:${pct}%;${barStyle}"></i></div>
     </div>`;
   }).join('');
   host.innerHTML=`<div class="card">
     <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:10px;">
-      <div class="section-title" style="margin:0;">💪 Set per otot</div>
-      <span class="micro"><b style="color:var(--green);">${hit}</b>/${VOL_GROUPS.length} grup ✅</span>
+      <div class="section-title" style="margin:0;">${svg('dumbbell',18)}Set per otot</div>
+      <span class="micro" style="display:inline-flex;align-items:center;gap:3px;"><b style="color:var(--green);">${hit}</b>/${VOL_GROUPS.length} grup <span class="ic" style="color:var(--green);">${svg('check',13)}</span></span>
     </div>
     <div class="micro" style="margin:2px 0 16px;">Minggu ini · ${range} · ${totalSets} set kerja</div>
     ${rows}
@@ -1916,7 +1955,7 @@ function drawSpark(cv,vals){
 function renderMeasures(){
   const statsEl=document.getElementById('measStats'); if(!statsEl)return;
   const sorted=[...measures].sort((a,b)=>a.date<b.date?-1:1);
-  statsEl.innerHTML=`<div class="card"><div class="section-title" style="margin-top:0;">📏 Ukuran tubuh</div>`+
+  statsEl.innerHTML=`<div class="card"><div class="section-title" style="margin-top:0;">${svg('ruler',18)}Ukuran tubuh</div>`+
     MEAS_PARTS.map(p=>{
       const vals=sorted.map(m=>m[p.k]).filter(v=>v!=null&&v!=='').map(Number);
       const latest=vals.length?vals[vals.length-1]:null, first=vals.length?vals[0]:null;
@@ -1935,7 +1974,7 @@ function renderMeasures(){
   });
   const wrap=document.getElementById('meHistory');
   if(!sorted.length){
-    wrap.innerHTML=`<div class="empty" style="padding:24px 10px;"><span class="em-ico">📏</span><div class="em-title">Belum ada ukuran</div><div class="em-sub">Catat lingkar tubuh tiap 2–4 minggu untuk lihat progres bulking.</div></div>`;
+    wrap.innerHTML=`<div class="empty" style="padding:24px 10px;"><span class="em-ico" style="display:inline-flex;justify-content:center;color:var(--faint);">${svg('ruler',40)}</span><div class="em-title">Belum ada ukuran</div><div class="em-sub">Catat lingkar tubuh tiap 2–4 minggu untuk lihat progres bulking.</div></div>`;
     return;
   }
   let rows='';
@@ -1988,7 +2027,7 @@ function setRowHTML(label,reps,weight){
 }
 function exBlockHTML(name,sets,hint){
   return `<div class="exblock">
-    <div class="exblock-head"><span class="en">${esc(name)}</span><button class="rm" onclick="this.closest('.exblock').remove()">🗑️</button></div>
+    <div class="exblock-head"><span class="en">${esc(name)}</span><button class="rm" onclick="this.closest('.exblock').remove()" aria-label="Hapus gerakan" style="display:inline-flex;align-items:center;">${svg('trash',16)}</button></div>
     ${hint?`<div class="exhint">↩︎ Diisi dari sesi ${hint} — tinggal sesuaikan</div>`:''}
     <div class="setrow-h"><span>Set</span><span>Reps</span><span>Berat</span><span></span></div>
     <div class="sets">${sets.map(s=>setRowHTML(s.label,s.reps,s.weight)).join('')}</div>
@@ -2142,8 +2181,8 @@ document.getElementById('mSave').onclick=()=>{
   calRef=parseKey(date);
   renderCalendar();renderDayDetail();renderStreak();
   if(prs.length){
-    const items=prs.map(p=>`🏆 <b>${esc(p.name)}</b> ${p.cur}kg <span style="color:var(--muted);">(sebelumnya ${p.prev}kg)</span>`).join('<br>');
-    showToast(`<div style="font-weight:600;color:var(--accent-ink);${prs.length>1?'margin-bottom:6px;':''}">Rekor baru!</div>${items}`);
+    const items=prs.map(p=>`<b>${esc(p.name)}</b> ${p.cur}kg <span style="color:var(--muted);">(sebelumnya ${p.prev}kg)</span>`).join('<br>');
+    showToast(`<div style="font-weight:600;color:var(--accent-ink);display:flex;align-items:center;gap:6px;${prs.length>1?'margin-bottom:6px;':''}">${svg('trophy',16)}Rekor baru!</div>${items}`);
   }
 };
 
