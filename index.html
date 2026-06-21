@@ -494,6 +494,8 @@ textarea.input{resize:vertical;min-height:64px;}
           <button class="tab active" data-tt="cal">📅 Kalender</button>
           <button class="tab" data-tt="weight">⚖️ Berat</button>
           <button class="tab" data-tt="overload">📈 Progres</button>
+          <button class="tab" data-tt="volume">💪 Volume</button>
+          <button class="tab" data-tt="measures">📏 Ukuran</button>
         </div>
 
         <!-- calendar -->
@@ -569,6 +571,33 @@ textarea.input{resize:vertical;min-height:64px;}
             <p>Saran otomatis: <b>+2.5kg</b> untuk gerakan compound, <b>+1.5kg</b> untuk isolasi — saat kamu bisa selesaikan semua set di RIR 1–2.</p>
           </div>
           <div id="overloadList"></div>
+        </div>
+
+        <!-- volume per otot -->
+        <div id="tt-volume" style="display:none;">
+          <div class="notebox">
+            <span class="ni">💪</span>
+            <p>Target <b>9 set/minggu (MEV)</b> per grup otot — riset: cukup untuk pertumbuhan maksimal pemula. Hanya <b>set kerja</b> yang dihitung (warmup tidak).</p>
+          </div>
+          <div id="volumeList"></div>
+        </div>
+
+        <!-- ukuran tubuh -->
+        <div id="tt-measures" style="display:none;">
+          <div id="measStats"></div>
+          <div class="card">
+            <div class="section-title" style="margin-top:0;">Catat ukuran (cm)</div>
+            <div class="field"><label>Tanggal</label><input type="date" class="input" id="meDate"></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <div class="field" style="flex:1 1 45%;min-width:0;"><label>Lengan</label><input type="number" step="0.1" inputmode="decimal" class="input" id="me_lengan" placeholder="cm"></div>
+              <div class="field" style="flex:1 1 45%;min-width:0;"><label>Dada</label><input type="number" step="0.1" inputmode="decimal" class="input" id="me_dada" placeholder="cm"></div>
+              <div class="field" style="flex:1 1 45%;min-width:0;"><label>Pinggang</label><input type="number" step="0.1" inputmode="decimal" class="input" id="me_pinggang" placeholder="cm"></div>
+              <div class="field" style="flex:1 1 45%;min-width:0;"><label>Paha</label><input type="number" step="0.1" inputmode="decimal" class="input" id="me_paha" placeholder="cm"></div>
+            </div>
+            <button class="btn btn-primary btn-block" id="meSave" style="margin-top:4px;">Simpan ukuran</button>
+          </div>
+          <div class="section-title">Riwayat</div>
+          <div class="card flat" id="meHistory"></div>
         </div>
       </section>
 
@@ -655,6 +684,19 @@ textarea.input{resize:vertical;min-height:64px;}
           </div>
         </div>
 
+        <!-- kalkulator plat -->
+        <div class="section-title">🧮 Kalkulator Plat</div>
+        <div class="card">
+          <p class="micro" style="margin-bottom:12px;">Untuk gerakan barbell / plate-loaded. Masukkan total beban & berat bar — lihat plat yang dipasang per sisi.</p>
+          <div style="display:flex;gap:10px;margin-bottom:12px;">
+            <div class="field" style="flex:1;margin:0;min-width:0;"><label>Total (kg)</label><input type="number" inputmode="decimal" class="input" id="plTotal" placeholder="cth. 60"></div>
+            <div class="field" style="flex:1;margin:0;min-width:0;"><label>Bar (kg)</label>
+              <select class="input" id="plBar"><option value="20">20</option><option value="15">15</option><option value="10">10</option><option value="0">Tanpa bar</option></select>
+            </div>
+          </div>
+          <div id="plResult" class="micro" style="line-height:1.6;">Masukkan total beban di atas.</div>
+        </div>
+
         <div class="section-title">📖 Panduan Gerakan</div>
         <div class="subtabs" id="guideTabs"></div>
         <div id="guideContent"></div>
@@ -728,6 +770,7 @@ textarea.input{resize:vertical;min-height:64px;}
         <button data-sec="90">90s</button>
         <button data-sec="120">120s</button>
       </div>
+      <button class="rt-stop" id="rtAuto" title="Auto-start rest setelah set kerja" style="width:auto;padding:0 9px;font-size:11px;font-weight:600;">⚡Auto</button>
       <button class="rt-stop" id="rtStop" aria-label="Stop timer">✕</button>
     </div>
     <div class="sheet-body">
@@ -976,6 +1019,7 @@ const LS = {
 const START_W=69, TARGET_W=78;
 let sessions = LS.get('gum_sessions',[]);
 let weights  = LS.get('gum_weights',[]);
+let measures = LS.get('gum_measures',[]);
 let calRef   = new Date();
 let selDate  = null;
 
@@ -1028,6 +1072,7 @@ function toggleTheme(){
   LS.set('gum_theme', isDark?'light':'dark');
   applyTheme();
   if(typeof drawWeightChart==='function')drawWeightChart(); // sesuaikan warna chart dgn tema
+  const mv=document.getElementById('tt-measures'); if(mv&&mv.style.display!=='none'&&typeof renderMeasures==='function')renderMeasures(); // sparkline ikut warna tema
 }
 document.getElementById('themeBtn').addEventListener('click',toggleTheme);
 document.getElementById('themeBtnSide').addEventListener('click',toggleTheme);
@@ -1313,9 +1358,11 @@ document.querySelectorAll('#glowTabs .subtab').forEach(b=>b.addEventListener('cl
 ========================================================= */
 document.querySelectorAll('#trackerTabs .tab').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('#trackerTabs .tab').forEach(x=>x.classList.toggle('active',x===b));
-  ['cal','weight','overload'].forEach(t=>document.getElementById('tt-'+t).style.display=t===b.dataset.tt?'':'none');
+  ['cal','weight','overload','volume','measures'].forEach(t=>document.getElementById('tt-'+t).style.display=t===b.dataset.tt?'':'none');
   if(b.dataset.tt==='weight')renderWeight();
   if(b.dataset.tt==='overload')renderOverload();
+  if(b.dataset.tt==='volume')renderVolume();
+  if(b.dataset.tt==='measures')renderMeasures();
 }));
 
 /* ---- Calendar ---- */
@@ -1364,7 +1411,8 @@ function renderDayDetail(){
           </div>
         </div>`;
       s.exercises.forEach(ex=>{
-        html+=`<div class="logged-ex"><div class="len">${esc(ex.name)}</div><div class="setline">
+        const pr=isPR(ex,s.date,s.id)?' <span title="Rekor berat baru">🏆</span>':'';
+        html+=`<div class="logged-ex"><div class="len">${esc(ex.name)}${pr}</div><div class="setline">
           ${ex.sets.map(st=>`<span class="setchip ${st.label==='WU'?'wu':''}"><b>${esc(st.label)}</b> ${esc(st.reps)||'–'}×${esc(st.weight)||'–'}${st.weight?'kg':''}</span>`).join('')}
         </div></div>`;
       });
@@ -1492,6 +1540,7 @@ function exportData(){
     _app:'glowupmen', _v:1, _exported:d.toISOString(),
     gum_sessions:sessions,
     gum_weights:weights,
+    gum_measures:measures,
     gum_habits:LS.get('gum_habits',{}),
     gum_theme:LS.get('gum_theme',null),
     gum_page:LS.get('gum_page','jadwal'),
@@ -1512,10 +1561,11 @@ function importData(file){
     if(!confirm('Pulihkan data dari file ini? Semua data saat ini akan ditimpa.')) return;
     if(Array.isArray(d.gum_sessions)){ sessions=d.gum_sessions; LS.set('gum_sessions',sessions); }
     if(Array.isArray(d.gum_weights)){ weights=d.gum_weights; LS.set('gum_weights',weights); }
+    if(Array.isArray(d.gum_measures)){ measures=d.gum_measures; LS.set('gum_measures',measures); }
     if(d.gum_habits && typeof d.gum_habits==='object'){ LS.set('gum_habits',d.gum_habits); }
     if(d.gum_theme==='light'||d.gum_theme==='dark'){ LS.set('gum_theme',d.gum_theme); } else { localStorage.removeItem('gum_theme'); }
     applyTheme();
-    renderCalendar(); renderDayDetail(); renderWeight(); renderOverload(); renderStreak();
+    renderCalendar(); renderDayDetail(); renderWeight(); renderOverload(); renderVolume(); renderMeasures(); renderStreak();
     if(glowSec==='habit')renderHabits();
     alert('Data berhasil dipulihkan ✅');
   };
@@ -1535,6 +1585,35 @@ function exCompound(name){
 }
 function maxWork(ex){
   let max=0;ex.sets.forEach(s=>{if(s.label!=='WU'&&+s.weight>max)max=+s.weight;});return max;
+}
+// rekor berat terberat untuk `name` dari sesi BERTANGGAL LEBIH AWAL (null = belum ada rekor sebelumnya)
+function prevBestWeight(name,beforeDate,excludeId){
+  let best=0,seen=false;
+  sessions.forEach(s=>{
+    if(s.id===excludeId)return;
+    if(!(s.date<beforeDate))return;
+    s.exercises.forEach(ex=>{ if(ex.name===name){ const m=maxWork(ex); if(m>0){seen=true; if(m>best)best=m;} } });
+  });
+  return seen?best:null;
+}
+// apakah gerakan ini PR pada tanggalnya (mengalahkan rekor sebelumnya — bukan pertama kali)
+function isPR(ex,date,sid){
+  const cur=maxWork(ex); if(cur<=0)return false;
+  const prev=prevBestWeight(ex.name,date,sid);
+  return prev!=null && cur>prev;
+}
+// toast melayang ringan (auto-hilang); tanpa CSS baru, pakai token warna lewat inline style
+function showToast(html){
+  let t=document.getElementById('prToast');
+  if(!t){
+    t=document.createElement('div'); t.id='prToast';
+    t.style.cssText='position:fixed;left:50%;bottom:calc(var(--nav-h) + 16px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(12px);z-index:120;max-width:92%;width:max-content;background:var(--surface);border:1px solid var(--border-2);border-radius:14px;box-shadow:var(--shadow-lg);padding:12px 16px;font-size:13px;line-height:1.5;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;';
+    document.body.appendChild(t);
+  }
+  t.innerHTML=html;
+  requestAnimationFrame(()=>{ t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)'; });
+  clearTimeout(t._h);
+  t._h=setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(12px)'; },4200);
 }
 function renderOverload(){
   const map={};
@@ -1567,6 +1646,136 @@ function renderOverload(){
     </div>`;
   }).join('');
 }
+
+/* ---- Volume per otot (set kerja per minggu) ---- */
+const MEV=9; // minimum effective volume — 9+ set/minggu cukup untuk pertumbuhan maksimal pemula
+const VOL_GROUPS=[
+  {key:'dada',     label:'Dada',          ex:["Iso-Lateral Chest Press","Incline Dumbbell Press","Pec Deck","Dumbbell Fly (Flat Bench)"]},
+  {key:'punggung', label:'Punggung',      ex:["Lat Pulldown","Lat Pulldown Wide Grip","Seated Cable Row","Seated Cable Row (Close Grip)","Cable Pullover"]},
+  {key:'bahu',     label:'Bahu',          ex:["Shoulder Press Machine (Plates)","Single Arm Cable Lateral Raise","Facepull"]},
+  {key:'biceps',   label:'Biceps',        ex:["Incline Dumbbell Curl","Bayesian Curl","Cable Hammer Curl"]},
+  {key:'triceps',  label:'Triceps',       ex:["Overhead Cable Triceps Extension","Triceps Pushdown"]},
+  {key:'forearm',  label:'Lengan Bawah',  ex:["Cable Wrist Curl"]},
+  {key:'quads',    label:'Paha Depan',    ex:["Hack Squat","Leg Press Lying (kaki rendah)"]},
+  {key:'hamstring',label:'Hamstring',     ex:["Lying Leg Curl"]},
+  {key:'glutes',   label:'Glutes/Pinggul',ex:["Hip Abductor Machine (open)","Hip Adductor Machine (close)"]},
+  {key:'betis',    label:'Betis',         ex:["Standing Calf Raise (Leg Press Berdiri)"]},
+  {key:'core',     label:'Perut/Core',    ex:["Cable Crunch","Rotary Torso Machine","Hanging Leg Raise"]},
+];
+const EX_GROUP={}; VOL_GROUPS.forEach(g=>g.ex.forEach(n=>EX_GROUP[n]=g.key));
+function renderVolume(){
+  const host=document.getElementById('volumeList'); if(!host)return;
+  const monKey=fmtKey(mondayOf(new Date()));
+  const counts={}; let other=0, totalSets=0;
+  sessions.forEach(s=>{
+    if(fmtKey(mondayOf(parseKey(s.date)))!==monKey)return; // hanya minggu berjalan
+    s.exercises.forEach(ex=>{
+      const work=ex.sets.filter(st=>st.label!=='WU').length; // set kerja saja, warmup tidak dihitung
+      if(!work)return;
+      totalSets+=work;
+      const g=EX_GROUP[ex.name];
+      if(g)counts[g]=(counts[g]||0)+work; else other+=work; // gerakan custom → "Lainnya"
+    });
+  });
+  const mon=mondayOf(new Date()), sun=new Date(mon); sun.setDate(sun.getDate()+6);
+  const range=mon.getDate()+' '+MON[mon.getMonth()]+' – '+sun.getDate()+' '+MON[sun.getMonth()];
+  const hit=VOL_GROUPS.filter(g=>(counts[g.key]||0)>=MEV).length;
+  const rows=VOL_GROUPS.map(g=>{
+    const c=counts[g.key]||0, done=c>=MEV, pct=Math.min(100,Math.round(c/MEV*100));
+    const cColor=c===0?'var(--faint)':done?'var(--green)':'var(--accent-ink)';
+    const barStyle=done?'background:var(--green);':'';
+    return `<div style="margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+        <span style="font-size:13px;font-weight:500;">${g.label}</span>
+        <span style="font-size:12px;font-weight:600;color:${cColor};">${c} / ${MEV} set${done?' ✅':''}</span>
+      </div>
+      <div class="pbar"><i style="width:${pct}%;${barStyle}"></i></div>
+    </div>`;
+  }).join('');
+  host.innerHTML=`<div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:10px;">
+      <div class="section-title" style="margin:0;">💪 Set per otot</div>
+      <span class="micro"><b style="color:var(--green);">${hit}</b>/${VOL_GROUPS.length} grup ✅</span>
+    </div>
+    <div class="micro" style="margin:2px 0 16px;">Minggu ini · ${range} · ${totalSets} set kerja</div>
+    ${rows}
+    ${other?`<div class="micro" style="margin-top:4px;">+ ${other} set gerakan lain (di luar program)</div>`:''}
+  </div>`;
+}
+
+/* ---- Ukuran tubuh ---- */
+const MEAS_PARTS=[{k:'lengan',label:'Lengan'},{k:'dada',label:'Dada'},{k:'pinggang',label:'Pinggang'},{k:'paha',label:'Paha'}];
+function drawSpark(cv,vals){
+  const w=cv.clientWidth||64, h=cv.clientHeight||24, dpr=window.devicePixelRatio||1;
+  cv.width=w*dpr; cv.height=h*dpr;
+  const ctx=cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,w,h);
+  if(vals.length<2)return;
+  const col=(getComputedStyle(document.documentElement).getPropertyValue('--accent')||'#6C47FF').trim();
+  let mn=Math.min(...vals), mx=Math.max(...vals); if(mx===mn){mx+=1;mn-=1;}
+  const pad=3, X=i=>pad+(w-2*pad)*i/(vals.length-1), Y=v=>pad+(h-2*pad)*(1-(v-mn)/(mx-mn));
+  ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.lineJoin='round'; ctx.beginPath();
+  vals.forEach((v,i)=>{const x=X(i),y=Y(v); i?ctx.lineTo(x,y):ctx.moveTo(x,y);}); ctx.stroke();
+  ctx.beginPath(); ctx.arc(X(vals.length-1),Y(vals[vals.length-1]),2,0,Math.PI*2); ctx.fillStyle=col; ctx.fill();
+}
+function renderMeasures(){
+  const statsEl=document.getElementById('measStats'); if(!statsEl)return;
+  const sorted=[...measures].sort((a,b)=>a.date<b.date?-1:1);
+  statsEl.innerHTML=`<div class="card"><div class="section-title" style="margin-top:0;">📏 Ukuran tubuh</div>`+
+    MEAS_PARTS.map(p=>{
+      const vals=sorted.map(m=>m[p.k]).filter(v=>v!=null&&v!=='').map(Number);
+      const latest=vals.length?vals[vals.length-1]:null, first=vals.length?vals[0]:null;
+      const d=(latest!=null&&first!=null)?+(latest-first).toFixed(1):null;
+      const delta=d==null?'':d>0?`<span class="up">▲ ${d}</span>`:d<0?`<span class="down">▼ ${Math.abs(d)}</span>`:'<span class="micro">–</span>';
+      return `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--border);">
+        <span style="flex:1;font-size:13px;font-weight:500;">${p.label}</span>
+        <canvas data-spark="${p.k}" style="width:64px;height:24px;"></canvas>
+        <span style="font-size:14px;font-weight:600;min-width:64px;text-align:right;">${latest!=null?latest+' <small style="font-size:11px;color:var(--muted);font-weight:500;">cm</small>':'<span style="color:var(--faint)">–</span>'}</span>
+        <span style="min-width:48px;text-align:right;font-size:12px;font-weight:600;">${delta}</span>
+      </div>`;
+    }).join('')+`</div>`;
+  MEAS_PARTS.forEach(p=>{
+    const cv=statsEl.querySelector(`canvas[data-spark="${p.k}"]`); if(!cv)return;
+    drawSpark(cv,sorted.map(m=>m[p.k]).filter(v=>v!=null&&v!=='').map(Number));
+  });
+  const wrap=document.getElementById('meHistory');
+  if(!sorted.length){
+    wrap.innerHTML=`<div class="empty" style="padding:24px 10px;"><span class="em-ico">📏</span><div class="em-title">Belum ada ukuran</div><div class="em-sub">Catat lingkar tubuh tiap 2–4 minggu untuk lihat progres bulking.</div></div>`;
+    return;
+  }
+  let rows='';
+  for(let i=sorted.length-1;i>=0;i--){const m=sorted[i];
+    rows+=`<tr><td>${fmtShort(m.date)}</td>`+MEAS_PARTS.map(p=>`<td>${m[p.k]!=null&&m[p.k]!==''?m[p.k]:'–'}</td>`).join('')+`<td style="text-align:right;"><button class="micro" style="color:var(--red);" onclick="delMeasure('${m.date}')">✕</button></td></tr>`;
+  }
+  wrap.innerHTML=`<table class="htable"><thead><tr><th>Tgl</th>${MEAS_PARTS.map(p=>`<th>${p.label}</th>`).join('')}<th></th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+function delMeasure(date){ if(!confirm('Hapus ukuran tanggal ini?'))return; measures=measures.filter(m=>m.date!==date); LS.set('gum_measures',measures); renderMeasures(); }
+document.getElementById('meSave').onclick=()=>{
+  const date=document.getElementById('meDate').value;
+  if(!date){alert('Pilih tanggal dulu ya.');return;}
+  const rec={date}; let any=false;
+  MEAS_PARTS.forEach(p=>{const v=parseFloat(document.getElementById('me_'+p.k).value); if(!isNaN(v)){rec[p.k]=+v.toFixed(1);any=true;}});
+  if(!any){alert('Isi minimal satu ukuran dulu ya.');return;}
+  measures=measures.filter(m=>m.date!==date); measures.push(rec); measures.sort((a,b)=>a.date<b.date?-1:1);
+  LS.set('gum_measures',measures);
+  MEAS_PARTS.forEach(p=>document.getElementById('me_'+p.k).value='');
+  renderMeasures();
+};
+
+/* ---- Kalkulator plat ---- */
+const PLATES=[20,15,10,5,2.5,1.25];
+function calcPlates(){
+  const out=document.getElementById('plResult'); if(!out)return;
+  const total=parseFloat(document.getElementById('plTotal').value);
+  const bar=+document.getElementById('plBar').value;
+  if(!total){ out.textContent='Masukkan total beban di atas.'; return; }
+  if(total<bar){ out.innerHTML=`<span style="color:var(--orange);">Total kurang dari berat bar (${bar}kg).</span>`; return; }
+  let rem=+((total-bar)/2).toFixed(3); const perSide=rem, parts=[];
+  PLATES.forEach(p=>{ const n=Math.floor(rem/p+1e-9); if(n>0){ parts.push(n+' × '+p+'kg'); rem=+(rem-n*p).toFixed(3); } });
+  let html=`<b>Per sisi (${perSide}kg):</b> `+(parts.length?parts.join(' + '):'kosong / hanya bar');
+  if(rem>0.01)html+=`<br><span style="color:var(--orange);">sisa ${+rem.toFixed(2)}kg tak bisa dipasang dengan plat standar</span>`;
+  out.innerHTML=html;
+}
+['plTotal','plBar'].forEach(id=>{const el=document.getElementById(id); if(el)el.addEventListener('input',calcPlates);});
 
 /* =========================================================
    SESSION MODAL
@@ -1611,6 +1820,41 @@ function addSet(btn,kind){
   }
   relabel(block.querySelector('.setrow'));
 }
+function roundTo(x,step){return Math.round(x/step)*step;}
+function topWorking(block){ // beban kerja terberat yang sudah diisi di satu exblock
+  let top=0;
+  block.querySelectorAll('.setrow').forEach(r=>{
+    if(r.querySelector('.sb').classList.contains('wu'))return;
+    const w=+r.querySelector('.w').value; if(w>top)top=w;
+  });
+  return top;
+}
+function autoWarmup(block){ // isi WU = 50% beban kerja terberat (dibulatkan 2.5kg)
+  const wuRow=[...block.querySelectorAll('.setrow')].find(r=>r.querySelector('.sb').classList.contains('wu'));
+  if(!wuRow)return;
+  const wuW=wuRow.querySelector('.w');
+  if(wuW.dataset.manual==='1')return;            // user sudah isi WU manual → jangan timpa
+  if(wuW.value && wuW.dataset.auto!=='1')return; // nilai dari template/last session → hormati
+  const top=topWorking(block);
+  if(top>0){ wuW.value=roundTo(top*0.5,2.5); wuW.dataset.auto='1'; }
+}
+// satu listener terdelegasi untuk semua input set (auto-warmup + auto-rest)
+(function(){
+  const mEx=document.getElementById('mExercises');
+  if(!mEx)return;
+  mEx.addEventListener('input',e=>{
+    const inp=e.target; if(!(inp.classList&&inp.classList.contains('w')))return;
+    const row=inp.closest('.setrow'), block=inp.closest('.exblock'); if(!row||!block)return;
+    if(row.querySelector('.sb').classList.contains('wu')){ inp.dataset.manual='1'; } // tandai WU manual
+    else { autoWarmup(block); }
+  });
+  mEx.addEventListener('change',e=>{ // selesai isi beban set kerja → mulai rest otomatis
+    const inp=e.target; if(!(inp.classList&&inp.classList.contains('w'))||!inp.value)return;
+    const row=inp.closest('.setrow'); if(!row)return;
+    if(row.querySelector('.sb').classList.contains('wu'))return; // hanya set kerja
+    if(autoRest)rtStart(lastPreset);
+  });
+})();
 function lastSessionFor(name){
   // sesi terbaru yang memuat latihan ini (dengan set terisi)
   const sorted=[...sessions].sort((a,b)=>a.date<b.date?1:-1);
@@ -1682,6 +1926,13 @@ document.getElementById('mSave').onclick=()=>{
   });
   if(!exercises.length){alert('Isi minimal satu set (reps / berat) dulu ya.');return;}
   const notes=document.getElementById('mNotes').value.trim();
+  // deteksi PR SEBELUM menyimpan (bandingkan dengan rekor sebelumnya; saat edit, abaikan sesi ini sendiri)
+  const prs=[];
+  exercises.forEach(ex=>{
+    const cur=maxWork(ex); if(cur<=0)return;
+    const prev=prevBestWeight(ex.name,date,editingId);
+    if(prev!=null && cur>prev)prs.push({name:ex.name,cur,prev});
+  });
   if(editingId){
     const i=sessions.findIndex(x=>x.id===editingId);
     if(i>-1)sessions[i]={...sessions[i],date,type,exercises,notes};
@@ -1694,12 +1945,17 @@ document.getElementById('mSave').onclick=()=>{
   selDate=date;
   calRef=parseKey(date);
   renderCalendar();renderDayDetail();renderStreak();
+  if(prs.length){
+    const items=prs.map(p=>`🏆 <b>${esc(p.name)}</b> ${p.cur}kg <span style="color:var(--muted);">(sebelumnya ${p.prev}kg)</span>`).join('<br>');
+    showToast(`<div style="font-weight:600;color:var(--accent-ink);${prs.length>1?'margin-bottom:6px;':''}">Rekor baru!</div>${items}`);
+  }
 };
 
 /* =========================================================
    REST TIMER (di dalam modal catat latihan)
 ========================================================= */
 let rtInterval=null, rtCtx=null;
+let autoRest=LS.get('gum_autorest',true), lastPreset=90; // auto-start rest + preset terakhir
 function rtFmt(s){const m=Math.floor(s/60),ss=s%60;return m>0?(m+':'+String(ss).padStart(2,'0')):(ss+'s');}
 function rtAudio(){
   try{ if(!rtCtx)rtCtx=new (window.AudioContext||window.webkitAudioContext)();
@@ -1741,9 +1997,17 @@ function rtStart(sec){
 }
 document.querySelectorAll('.rt-presets button').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.rt-presets button').forEach(x=>x.classList.toggle('active',x===b));
-  rtStart(+b.dataset.sec);
+  lastPreset=+b.dataset.sec;
+  rtStart(lastPreset);
 }));
 document.getElementById('rtStop').onclick=rtStopTimer;
+function updateAutoBtn(){
+  const b=document.getElementById('rtAuto'); if(!b)return;
+  b.style.background=autoRest?'var(--accent-soft)':'var(--surface-2)';
+  b.style.color=autoRest?'var(--accent-ink)':'var(--faint)';
+  b.style.borderColor=autoRest?'transparent':'var(--border-2)';
+}
+document.getElementById('rtAuto').onclick=()=>{ autoRest=!autoRest; LS.set('gum_autorest',autoRest); updateAutoBtn(); };
 
 /* =========================================================
    INIT
@@ -1757,6 +2021,8 @@ function init(){
   selDate=todayStr();
   renderCalendar();renderDayDetail();
   document.getElementById('wDate').value=todayStr();
+  document.getElementById('meDate').value=todayStr();
+  updateAutoBtn();
   matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{if(!LS.get('gum_theme',null))applyTheme();});
   const savedPage=LS.get('gum_page','jadwal'); // kembali ke halaman terakhir setelah refresh
   go(PAGE_META[savedPage]?savedPage:'jadwal');
