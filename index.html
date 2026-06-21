@@ -1668,7 +1668,6 @@ function renderDayDetail(){
       if(s.notes)html+=`<div class="micro" style="margin-top:8px;background:var(--surface-2);padding:9px 11px;border-radius:9px;"><span class="ic" style="vertical-align:-2px;margin-right:5px;">${svg('edit',13)}</span>${esc(s.notes)}</div>`;
       html+=`</div>`;
     });
-    html+=`<button class="btn btn-soft btn-block" onclick="openModal('${selDate}','${sched==='rest'?'pull':sched}')">+ Catat sesi lain</button>`;
   } else {
     html+=`<div class="empty" style="padding:24px 10px;">
       <span class="em-ico" style="display:inline-flex;justify-content:center;color:var(--faint);">${sched==='rest'?svg('moon',40):svg('edit',40)}</span>
@@ -2171,8 +2170,10 @@ function discardDraft(){
 }
 let editingId=null;
 function openModal(date,type){
-  editingId=null; draftTouched=false; clearTimeout(closeTimer);
   date=date||todayStr();
+  const existing=sessionsOn(date)[0];
+  if(existing){ openEdit(existing.id); return; } // maks 1 sesi/hari → edit yang sudah ada
+  editingId=null; draftTouched=false; clearTimeout(closeTimer);
   document.getElementById('modalTitle').textContent='Catat Latihan';
   document.getElementById('mDate').value=date;
   document.getElementById('mNewEx').value='';
@@ -2200,7 +2201,18 @@ function openEdit(id){
   document.getElementById('mType').value=s.type;
   document.getElementById('mNotes').value=s.notes||'';
   document.getElementById('mNewEx').value='';
-  document.getElementById('mExercises').innerHTML=s.exercises.map(ex=>exBlockHTML(ex.name,ex.sets)).join('');
+  // tampilkan template lengkap: gerakan yang sudah dicatat tetap dengan datanya,
+  // gerakan template yang belum diisi tampil kosong (tidak hilang)
+  const tpl=WORKOUTS[s.type]||[];
+  const loggedMap={}; s.exercises.forEach(ex=>{loggedMap[ex.name]=ex;});
+  let html=tpl.map(e=>{
+    const lg=loggedMap[e.n];
+    const sets=lg?lg.sets:[{label:'WU'},{label:'S1'},{label:'S2'},{label:'S3'}];
+    return exBlockHTML(e.n,sets);
+  }).join('');
+  // gerakan custom yang dicatat tapi di luar template → tetap ditampilkan
+  s.exercises.forEach(ex=>{ if(!tpl.some(t=>t.n===ex.name)) html+=exBlockHTML(ex.name,ex.sets); });
+  document.getElementById('mExercises').innerHTML=html;
   showDraftNote(false);
   modal.classList.remove('closing');
   modal.classList.add('show');
@@ -2253,8 +2265,9 @@ document.getElementById('mSave').onclick=()=>{
     const prev=prevBestWeight(ex.name,date,editingId);
     if(prev!=null && cur>prev)prs.push({name:ex.name,cur,prev});
   });
-  if(editingId){
-    const i=sessions.findIndex(x=>x.id===editingId);
+  const targetId = editingId || (sessionsOn(date)[0] && sessionsOn(date)[0].id); // maks 1 sesi/hari
+  if(targetId){
+    const i=sessions.findIndex(x=>x.id===targetId);
     if(i>-1)sessions[i]={...sessions[i],date,type,exercises,notes};
   }else{
     const id='s_'+date+'_'+Math.floor(performance.now())+'_'+sessions.length;
