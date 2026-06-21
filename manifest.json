@@ -4,8 +4,8 @@
   "description": "Jadwal gym, tracker, panduan gizi & glow up",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FAFAFA",
-  "theme_color": "#111111",
+  "background_color": "#F7F7FB",
+  "theme_color": "#6C47FF",
   "orientation": "portrait",
   "icons": [
     {
