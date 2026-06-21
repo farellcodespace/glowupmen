@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Archivo+Expanded:wght@600;700;800&display=swap');
 
 /* ============ TOKENS ============ */
 :root{
@@ -35,6 +35,7 @@
   --shadow-lg:0 8px 40px rgba(40,30,100,.18);
   --r:16px; --r-sm:12px; --r-xs:9px;
   --nav-h:64px;
+  --display:"Archivo Expanded","Inter",-apple-system,sans-serif;
 }
 @media (prefers-color-scheme:dark){
   :root{
@@ -71,7 +72,7 @@ html[data-theme="dark"]{
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;}
 body{
-  font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   background:var(--bg); color:var(--text);
   font-size:14px; font-weight:400; line-height:1.55;
   -webkit-font-smoothing:antialiased;
@@ -82,6 +83,18 @@ button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit
 button{cursor:pointer;border:none;background:none;}
 input,select,textarea{outline:none;}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px;}
+
+/* ============ TYPE ROLES (display face untuk judul & angka) ============ */
+.page-title,.side-brand .bn,.topbar .brand .logo+div .page-title,
+.daycard-head .daytype,.statcard .sv,.streak-flame .num,.streak-week .wk-val,
+.macro-hero .kcal,#wCur,.sheet-head h3,.cal-head h3,.daytype{
+  font-family:var(--display);
+  letter-spacing:-.3px;
+}
+.macro-hero .kcal,.streak-flame .num,.page-title{letter-spacing:-.5px;}
+/* ikon SVG */
+.ni svg,#themeIcoSide svg{vertical-align:middle;}
+.icon-btn svg{display:block;}
 
 /* ============ LAYOUT ============ */
 .layout{display:flex;min-height:100vh;}
@@ -1184,6 +1197,26 @@ function go(page){
 document.querySelectorAll('.nav-btn,.side-btn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
 
 /* =========================================================
+   IKON (SVG stroke, mengikuti currentColor)
+========================================================= */
+const ICON_PATHS={
+  jadwal:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  tracker:'<path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="7" rx="1"/><rect x="12" y="7" width="3" height="11" rx="1"/><rect x="17" y="4" width="3" height="14" rx="1"/>',
+  panduan:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+  gizi:'<path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"/><path d="M10 2c1 .5 2 2 2 5"/>',
+  glow:'<path d="M12 3l1.55 4.45L18 9l-4.45 1.55L12 15l-1.55-4.45L6 9l4.45-1.55z"/><path d="M19 14l.7 2L22 16.8l-2 .7L19.4 20l-.7-2L16.3 17.5l2-.7z"/>',
+  bantuan:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
+  moon:'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+};
+function svg(name,size){const p=ICON_PATHS[name]; if(!p)return''; return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;}
+function paintIcons(){
+  document.querySelectorAll('.nav-btn').forEach(b=>{const i=b.querySelector('.ni'); if(i&&ICON_PATHS[b.dataset.page])i.innerHTML=svg(b.dataset.page,22);});
+  document.querySelectorAll('.side-btn').forEach(b=>{const i=b.querySelector('.ni'); if(i&&ICON_PATHS[b.dataset.page])i.innerHTML=svg(b.dataset.page,20);});
+  const hb=document.getElementById('helpBtn'); if(hb)hb.innerHTML=svg('bantuan',19);
+}
+
+/* =========================================================
    THEME
 ========================================================= */
 function applyTheme(){
@@ -1191,9 +1224,9 @@ function applyTheme(){
   const root=document.documentElement;
   if(t){root.setAttribute('data-theme',t);}else{root.removeAttribute('data-theme');}
   const isDark = t ? t==='dark' : matchMedia('(prefers-color-scheme:dark)').matches;
-  const ico=isDark?'☀️':'🌙';
-  document.getElementById('themeIco').textContent=ico;
-  const si=document.getElementById('themeIcoSide'); if(si)si.textContent=ico;
+  const ico=svg(isDark?'sun':'moon',18);
+  document.getElementById('themeIco').innerHTML=ico;
+  const si=document.getElementById('themeIcoSide'); if(si)si.innerHTML=ico;
 }
 function toggleTheme(){
   const cur=LS.get('gum_theme',null);
@@ -1621,7 +1654,7 @@ function drawWeightChart(){
   const padY=(ymax-ymin)*0.12||1; ymin-=padY; ymax+=padY;
   const X=i=> sorted.length===1? padL+plotW/2 : padL+plotW*i/(sorted.length-1);
   const Y=v=> padT+plotH*(1-(v-ymin)/(ymax-ymin));
-  ctx.font='10px Poppins,sans-serif'; ctx.textBaseline='middle';
+  ctx.font='10px Inter,sans-serif'; ctx.textBaseline='middle';
   // gridlines + label sumbu Y
   for(let s=0;s<=4;s++){
     const v=ymin+(ymax-ymin)*s/4, yy=Y(v);
@@ -2143,6 +2176,7 @@ document.getElementById('rtAuto').onclick=()=>{ autoRest=!autoRest; LS.set('gum_
    INIT
 ========================================================= */
 function init(){
+  paintIcons();
   applyTheme();
   renderSchedule();renderStreak();
   renderGuideTabs();renderGuide();
