@@ -457,6 +457,7 @@ textarea.input{resize:vertical;min-height:64px;}
       <button class="side-btn" data-page="panduan"><span class="ni">📖</span> Panduan</button>
       <button class="side-btn" data-page="gizi"><span class="ni">🥗</span> Gizi</button>
       <button class="side-btn" data-page="glow"><span class="ni">✨</span> Glow Up</button>
+      <button class="side-btn" data-page="bantuan"><span class="ni">ℹ️</span> Bantuan</button>
     </nav>
     <div class="side-foot">
       <button class="btn btn-ghost btn-block btn-sm" id="themeBtnSide"><span id="themeIcoSide">🌙</span> Tema</button>
@@ -473,7 +474,10 @@ textarea.input{resize:vertical;min-height:64px;}
           <div class="page-sub" id="pageSub">Latihanmu minggu ini</div>
         </div>
       </div>
-      <button class="icon-btn" id="themeBtn" aria-label="Ganti tema"><span id="themeIco">🌙</span></button>
+      <div style="display:flex;gap:9px;">
+        <button class="icon-btn" id="helpBtn" aria-label="Bantuan & tentang">ℹ️</button>
+        <button class="icon-btn" id="themeBtn" aria-label="Ganti tema"><span id="themeIco">🌙</span></button>
+      </div>
     </header>
 
     <main class="content">
@@ -740,6 +744,130 @@ textarea.input{resize:vertical;min-height:64px;}
           <button class="subtab" data-glow="dd">⚖️ Do & Don't</button>
         </div>
         <div id="glowContent"></div>
+      </section>
+
+      <!-- ===================== BANTUAN ===================== -->
+      <section id="page-bantuan" class="page">
+        <button class="btn btn-ghost btn-sm" onclick="go('jadwal')" style="margin-bottom:14px;">← Kembali</button>
+
+        <div class="notebox">
+          <span class="ni">👋</span>
+          <p>Panduan singkat semua fitur GlowUp Men. Ketuk tiap bagian untuk membuka.</p>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" onclick="this.parentElement.classList.toggle('open')">
+            <span class="num">📅</span>
+            <div style="flex:1;min-width:0;"><div class="at">Jadwal</div><div class="am">Latihan mingguan & streak</div></div>
+            <span class="chev">▼</span>
+          </button>
+          <div class="acc-body">
+            <p style="font-size:13px;color:var(--text);margin-bottom:9px;">Jadwal <b>UL×PPL</b>: Senin Upper · Selasa Lower · Rabu Rest · Kamis Push · Jumat Pull · Sabtu Legs · Minggu Rest. Hari ini otomatis terbuka.</p>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:7px;">
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Kartu Streak 🔥</b> — minggu beruntun & sesi minggu ini. <i>Contoh:</i> "🔥 3 minggu · 2/5 sesi".</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span>Ketuk kartu hari → daftar gerakan, target set/rep, tanda <b>↔</b> = gerakan tangan bergantian (kanan dulu).</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" onclick="this.parentElement.classList.toggle('open')">
+            <span class="num">📊</span>
+            <div style="flex:1;min-width:0;"><div class="at">Tracker</div><div class="am">Kalender, berat, progres, volume, ukuran</div></div>
+            <span class="chev">▼</span>
+          </button>
+          <div class="acc-body">
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>📅 Kalender</b> — hijau = jadwal latihan, titik = sudah dicatat. Ketuk tanggal untuk catat/edit/hapus. Ikon <b>🏆</b> muncul di sesi yang pecah rekor.</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>⚖️ Berat</b> — progress ke target 78kg, grafik tren, riwayat. Di sini juga <b>💾 Backup</b> (Export/Import).</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>📈 Progres</b> — saran kenaikan beban otomatis. <i>Contoh:</i> "Hack Squat · +2.5kg · coba 62.5kg".</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>💪 Volume</b> <span style="color:var(--accent-ink);font-weight:600;">✨ baru</span> — set kerja per otot minggu ini vs target 9. <i>Contoh:</i> "Dada 6/9 · Punggung 12/9 ✅".</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>📏 Ukuran</b> <span style="color:var(--accent-ink);font-weight:600;">✨ baru</span> — lingkar lengan/dada/pinggang/paha + grafik mini. <i>Contoh:</i> "Lengan 34 → 35.5 cm ▲".</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" onclick="this.parentElement.classList.toggle('open')">
+            <span class="num">📝</span>
+            <div style="flex:1;min-width:0;"><div class="at">Catat Latihan</div><div class="am">Jendela saat menekan "+ Catat latihan"</div></div>
+            <span class="chev">▼</span>
+          </button>
+          <div class="acc-body">
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span>Gerakan & beban <b>terisi otomatis</b> dari sesi terakhir — tinggal disesuaikan.</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Auto-warmup</b> <span style="color:var(--accent-ink);font-weight:600;">✨ baru</span> — isi S1 = 60kg → baris WU otomatis 30kg (50%).</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Rest timer ⚡Auto</b> <span style="color:var(--accent-ink);font-weight:600;">✨ baru</span> — selesai isi beban → timer rest jalan sendiri (bunyi + getar saat habis). Bisa dimatikan dari tombol ⚡Auto.</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span>Beban lebih berat dari rekor → muncul <b>🏆 Rekor baru!</b> <span style="color:var(--accent-ink);font-weight:600;">✨ baru</span></span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span>Bisa <b>tambah gerakan custom</b> & catatan sesi.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" onclick="this.parentElement.classList.toggle('open')">
+            <span class="num">📖</span>
+            <div style="flex:1;min-width:0;"><div class="at">Panduan</div><div class="am">Cara, alasan & alat bantu</div></div>
+            <span class="chev">▼</span>
+          </button>
+          <div class="acc-body">
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>🎯 Cara cari beban</b> — 5 langkah: mulai ringan → RIR → tes → progressive overload → tanda beban pas (DO/DON'T).</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>🧮 Kalkulator plat</b> <span style="color:var(--accent-ink);font-weight:600;">✨ baru</span> — total 60kg, bar 20kg → "per sisi: 1 × 20kg".</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>📖 Panduan gerakan</b> — tiap gerakan: cara, tips, & 🔬 kenapa efektif (alasan ilmiah).</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" onclick="this.parentElement.classList.toggle('open')">
+            <span class="num">🥗</span>
+            <div style="flex:1;min-width:0;"><div class="at">Gizi</div><div class="am">Target makro & rencana makan</div></div>
+            <span class="chev">▼</span>
+          </button>
+          <div class="acc-body">
+            <p style="font-size:13px;color:var(--text);margin-bottom:9px;">Target bulking: <b>2.700 kkal · 140g protein · 350g karbo · 70g lemak</b>.</p>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:7px;">
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span>Jadwal makan 6 waktu + sumber protein & kandungannya.</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span>Tips: hidrasi 3–4L, rebus/kukus &gt; goreng, budget &lt; Rp50rb/hari.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" onclick="this.parentElement.classList.toggle('open')">
+            <span class="num">✨</span>
+            <div style="flex:1;min-width:0;"><div class="at">Glow Up</div><div class="am">Skincare, rambut, style, kebiasaan</div></div>
+            <span class="chev">▼</span>
+          </button>
+          <div class="acc-body">
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:7px;">
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Skincare / Rambut / Style</b> — rutinitas & rekomendasi praktis.</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Kebiasaan</b> — checklist harian (air, tidur, sunscreen…) + grafik 7 hari.</span></li>
+              <li style="font-size:13px;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--accent-ink);font-weight:700;">›</span><span><b>Do &amp; Don't</b> — untuk makan, gym, dan glow up.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" onclick="this.parentElement.classList.toggle('open')">
+            <span class="num">💾</span>
+            <div style="flex:1;min-width:0;"><div class="at">Data &amp; Backup</div><div class="am">PENTING — supaya data tidak hilang</div></div>
+            <span class="chev">▼</span>
+          </button>
+          <div class="acc-body">
+            <div class="guide-block why" style="margin-bottom:0;">
+              <h5>⚠️ Wajib dibaca</h5>
+              <p>Semua datamu (log latihan, berat, ukuran, kebiasaan) tersimpan <b>hanya di HP/browser ini</b>. Data bisa hilang kalau cache dibersihkan, ganti HP, atau uninstall. Rutin <b>Export backup</b> di <b>Tracker → ⚖️ Berat → 💾 Backup</b>, dan <b>Import</b> di perangkat baru.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="text-align:center;">
+          <div style="font-size:15px;font-weight:700;letter-spacing:-.3px;">GlowUp Men</div>
+          <div class="micro" style="margin:3px 0 2px;">Versi 1.0 · Bulking · UL × PPL</div>
+          <div class="micro">Latihan berbasis science · 100% berjalan di HP-mu, tanpa akun.</div>
+        </div>
       </section>
 
     </main>
@@ -1041,6 +1169,7 @@ const PAGE_META={
   panduan:['Panduan','Cara & alasan tiap gerakan'],
   gizi:['Gizi','Target & rencana makan'],
   glow:['Glow Up','Skincare, rambut & kebiasaan'],
+  bantuan:['Bantuan','Panduan & tentang aplikasi'],
 };
 function go(page){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -1076,6 +1205,7 @@ function toggleTheme(){
 }
 document.getElementById('themeBtn').addEventListener('click',toggleTheme);
 document.getElementById('themeBtnSide').addEventListener('click',toggleTheme);
+document.getElementById('helpBtn').addEventListener('click',()=>go('bantuan'));
 
 /* =========================================================
    JADWAL
