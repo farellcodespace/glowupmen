@@ -201,6 +201,18 @@ textarea.input{resize:vertical;min-height:64px;}
 .pbar > i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent-d));transition:width .9s cubic-bezier(.22,1,.36,1);}
 
 /* ============ JADWAL ============ */
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--accent),var(--accent-d));border-radius:var(--r);padding:20px;color:#fff;box-shadow:var(--shadow-lg);margin-bottom:14px;}
+.hero::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.10);}
+.hero.hero-rest{background:var(--surface);color:var(--text);border:1px solid var(--border);box-shadow:var(--shadow);}
+.hero.hero-rest::after{background:var(--surface-2);}
+.hero-eyebrow{position:relative;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;opacity:.85;}
+.hero.hero-rest .hero-eyebrow{color:var(--muted);opacity:1;}
+.hero-title{position:relative;font-family:var(--display);font-size:38px;font-weight:800;letter-spacing:-1px;line-height:1.02;margin:7px 0 5px;text-transform:uppercase;}
+.hero-sub{position:relative;font-size:13px;opacity:.92;}
+.hero.hero-rest .hero-sub{color:var(--muted);opacity:1;}
+.hero-btn{position:relative;margin-top:16px;display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.20);color:#fff;font-weight:600;font-size:13px;padding:10px 16px;border-radius:11px;transition:background .2s,transform .12s;}
+.hero-btn:hover{background:rgba(255,255,255,.30);}
+.hero-btn:active{transform:scale(.97);}
 .daycard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:12px;overflow:hidden;transition:border-color .2s;}
 .daycard.today{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft),var(--shadow);}
 .daycard-head{display:flex;align-items:center;gap:11px;padding:14px 16px;width:100%;text-align:left;}
@@ -497,6 +509,7 @@ textarea.input{resize:vertical;min-height:64px;}
 
       <!-- ===================== JADWAL ===================== -->
       <section id="page-jadwal" class="page active">
+        <div id="heroToday"></div>
         <div id="streakCard"></div>
         <div class="notebox">
           <span class="ni">🎯</span>
@@ -1272,6 +1285,26 @@ function renderStreak(){
     <div class="streak-weeks">
       ${weeks.map(wk=>`<div class="wk ${wk.n>=WEEK_GOAL?'full':wk.n>0?'has':''}" title="Minggu ${fmtShort(wk.k)}${wk.cur?' (ini)':''}">${wk.n}</div>`).join('')}
     </div>
+  </div>`;
+}
+function renderHero(){
+  const el=document.getElementById('heroToday'); if(!el)return;
+  const now=new Date(), w=now.getDay(), type=SCHEDULE[w];
+  const dateStr=DAY_ID[w]+', '+now.getDate()+' '+MON[now.getMonth()];
+  if(type==='rest'){
+    el.innerHTML=`<div class="hero hero-rest">
+      <div class="hero-eyebrow">Hari ini · ${dateStr}</div>
+      <div class="hero-title">Rest Day</div>
+      <div class="hero-sub">Recovery — otot tumbuh saat istirahat. Tidur cukup &amp; cukupi protein.</div>
+    </div>`;
+    return;
+  }
+  const T=TYPES[type], n=WORKOUTS[type].length;
+  el.innerHTML=`<div class="hero">
+    <div class="hero-eyebrow">Hari ini · ${dateStr}</div>
+    <div class="hero-title">${T.label}</div>
+    <div class="hero-sub">${T.focus} · ${n} gerakan</div>
+    <button class="hero-btn" onclick="openModal(todayStr(),'${type}')">Catat latihan →</button>
   </div>`;
 }
 function renderSchedule(){
@@ -2178,7 +2211,7 @@ document.getElementById('rtAuto').onclick=()=>{ autoRest=!autoRest; LS.set('gum_
 function init(){
   paintIcons();
   applyTheme();
-  renderSchedule();renderStreak();
+  renderHero();renderSchedule();renderStreak();
   renderGuideTabs();renderGuide();
   renderGizi();
   renderGlow();
