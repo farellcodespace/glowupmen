@@ -247,6 +247,36 @@ textarea.input{resize:vertical;min-height:64px;}
 
 /* weight / overload */
 .statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
+.chart-wrap{width:100%;height:180px;}
+.chart-wrap canvas{display:block;width:100%;height:100%;}
+.streak-top{display:flex;gap:12px;align-items:stretch;}
+.streak-flame{flex-shrink:0;min-width:100px;text-align:center;background:var(--accent-soft);border-radius:12px;padding:12px;display:flex;flex-direction:column;justify-content:center;}
+.streak-flame .num{font-size:26px;font-weight:700;color:var(--accent-ink);line-height:1;letter-spacing:-.5px;}
+.streak-flame .lbl{font-size:11px;color:var(--accent-ink);margin-top:4px;}
+.streak-week{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;}
+.streak-week .wk-val{font-size:20px;font-weight:700;margin:3px 0 8px;letter-spacing:-.3px;}
+.streak-week .wk-val small{font-size:12px;font-weight:500;color:var(--muted);letter-spacing:0;}
+.streak-weeks{display:flex;gap:5px;}
+.streak-weeks .wk{flex:1;text-align:center;font-size:12px;font-weight:600;padding:8px 0;border-radius:8px;background:var(--surface-2);border:1px solid var(--border-2);color:var(--faint);}
+.streak-weeks .wk.has{background:var(--accent-soft);color:var(--accent-ink);border-color:transparent;}
+.streak-weeks .wk.full{background:var(--green-soft);color:var(--green);border-color:transparent;}
+.habit-list{display:flex;flex-direction:column;gap:8px;}
+.habit{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:11px 13px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border-2);transition:all .15s;}
+.habit:active{transform:scale(.99);}
+.habit .hk-ic{font-size:18px;}
+.habit .hk-t{flex:1;font-size:13px;font-weight:500;}
+.habit .hk-box{width:24px;height:24px;border-radius:7px;border:2px solid var(--border-2);display:grid;place-items:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.habit.on{background:var(--accent-soft);border-color:transparent;}
+.habit.on .hk-t{color:var(--accent-ink);}
+.habit.on .hk-box{background:var(--accent);border-color:var(--accent);}
+.habit-week{display:flex;gap:6px;}
+.habit-week .hw{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.habit-week .hw i{display:block;width:100%;max-width:32px;height:30px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border-2);}
+.habit-week .hw i[data-lvl="1"]{background:var(--accent-soft);border-color:transparent;}
+.habit-week .hw i[data-lvl="2"]{background:color-mix(in srgb,var(--accent) 55%,transparent);border-color:transparent;}
+.habit-week .hw i[data-lvl="3"]{background:var(--green);border-color:transparent;}
+.habit-week .hw.cur i{box-shadow:0 0 0 2px var(--accent);}
+.habit-week .hw span{font-size:10px;color:var(--faint);}
 .statcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:13px 14px;box-shadow:var(--shadow);}
 .statcard .sv{font-size:22px;font-weight:700;letter-spacing:-.5px;line-height:1.1;}
 .statcard .sl{font-size:11px;color:var(--muted);margin-top:2px;}
@@ -342,6 +372,15 @@ textarea.input{resize:vertical;min-height:64px;}
 .sheet{background:var(--bg);width:100%;max-width:560px;max-height:92vh;border-radius:22px 22px 0 0;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);animation:slideup .3s cubic-bezier(.22,1,.36,1);}
 @keyframes slideup{from{transform:translateY(100%);}to{transform:none;}}
 .sheet-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--border);}
+.rtimer{display:flex;align-items:center;gap:8px;padding:10px 18px;border-bottom:1px solid var(--border);background:var(--surface);}
+.rtimer .rt-ico{font-size:15px;}
+.rt-display{font-size:14px;font-weight:600;min-width:54px;font-variant-numeric:tabular-nums;color:var(--muted);}
+.rt-display.run{color:var(--accent-ink);}
+.rt-display.done{color:var(--green);}
+.rt-presets{display:flex;gap:6px;margin-left:auto;}
+.rt-presets button{font-size:12px;font-weight:600;padding:6px 11px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border-2);color:var(--text);transition:all .15s;}
+.rt-presets button.active{background:var(--accent-soft);border-color:transparent;color:var(--accent-ink);}
+.rt-stop{width:30px;height:30px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border-2);color:var(--faint);font-size:13px;}
 .sheet-head h3{font-size:17px;font-weight:600;}
 .sheet-head .x{width:32px;height:32px;border-radius:9px;background:var(--surface);border:1px solid var(--border);display:grid;place-items:center;font-size:16px;}
 .sheet-body{overflow-y:auto;padding:16px 18px;}
@@ -349,6 +388,7 @@ textarea.input{resize:vertical;min-height:64px;}
 
 .exblock{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:13px;margin-bottom:11px;box-shadow:var(--shadow);}
 .exblock-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.exhint{font-size:11px;color:var(--accent-ink);background:var(--accent-soft);border-radius:8px;padding:5px 9px;margin-bottom:9px;}
 .exblock-head .en{font-size:13px;font-weight:600;flex:1;}
 .exblock-head .rm{color:var(--faint);font-size:15px;padding:2px 6px;}
 .setrow{display:grid;grid-template-columns:46px 1fr 1fr 28px;gap:7px;align-items:center;margin-bottom:7px;}
@@ -440,6 +480,7 @@ textarea.input{resize:vertical;min-height:64px;}
 
       <!-- ===================== JADWAL ===================== -->
       <section id="page-jadwal" class="page active">
+        <div id="streakCard"></div>
         <div class="notebox">
           <span class="ni">🎯</span>
           <p><b>Fase bulking</b> · 180cm · 69 → 78kg. Beginner (2 minggu efektif). Pakai <b>RIR 1–2</b> untuk 4–6 minggu pertama, fokus form & progressive overload.</p>
@@ -495,6 +536,11 @@ textarea.input{resize:vertical;min-height:64px;}
             <div class="statcard"><div class="sv" id="wStatGain" style="color:var(--green);">+0<small> kg</small></div><div class="sl">Total naik</div></div>
           </div>
 
+          <div class="card" id="wChartCard">
+            <div class="label" style="margin-bottom:10px;">📈 Tren berat</div>
+            <div class="chart-wrap"><canvas id="wChart"></canvas></div>
+          </div>
+
           <div class="card">
             <div class="section-title" style="margin-top:0;">Catat berat badan</div>
             <div class="field"><label>Tanggal</label><input type="date" class="input" id="wDate"></div>
@@ -504,6 +550,16 @@ textarea.input{resize:vertical;min-height:64px;}
 
           <div class="section-title">Riwayat</div>
           <div class="card flat" id="wHistory"></div>
+
+          <div class="section-title">💾 Backup Data</div>
+          <div class="card">
+            <p class="micro" style="margin-bottom:12px;line-height:1.5;">Cadangkan semua data (log latihan, berat badan, pengaturan) ke satu file, atau pulihkan dari file backup. Lakukan rutin — terutama sebelum ganti HP atau membersihkan cache browser.</p>
+            <div style="display:flex;gap:10px;">
+              <button class="btn btn-ghost" id="btnExport" style="flex:1;">⬇️ Export</button>
+              <button class="btn btn-ghost" id="btnImport" style="flex:1;">⬆️ Import</button>
+            </div>
+            <input type="file" id="importFile" accept="application/json,.json" hidden>
+          </div>
         </div>
 
         <!-- overload -->
@@ -582,6 +638,16 @@ textarea.input{resize:vertical;min-height:64px;}
       <h3 id="modalTitle">Catat Latihan</h3>
       <button class="x" id="modalClose" aria-label="Tutup">✕</button>
     </div>
+    <div class="rtimer">
+      <span class="rt-ico">⏱️</span>
+      <span class="rt-display" id="rtDisplay">Rest</span>
+      <div class="rt-presets">
+        <button data-sec="60">60s</button>
+        <button data-sec="90">90s</button>
+        <button data-sec="120">120s</button>
+      </div>
+      <button class="rt-stop" id="rtStop" aria-label="Stop timer">✕</button>
+    </div>
     <div class="sheet-body">
       <div class="field"><label>Tanggal</label><input type="date" class="input" id="mDate"></div>
       <div class="field"><label>Jenis sesi</label>
@@ -616,7 +682,7 @@ const TYPES = {
   pull:  {label:'Pull',  focus:'Back & Biceps',                   cls:'b-pull',  tcls:'t-pull'},
   push:  {label:'Push',  focus:'Chest, Shoulders & Triceps',      cls:'b-push',  tcls:'t-push'},
   upper: {label:'Upper', focus:'Full Upper Body',                 cls:'b-upper', tcls:'t-upper'},
-  lower: {label:'Lower', focus:'Hamstring Heavy, Glutes & Core',  cls:'b-lower', tcls:'t-lower'},
+  lower: {label:'Lower', focus:'Quad Heavy, Hamstrings & Core',   cls:'b-lower', tcls:'t-lower'},
   legs:  {label:'Legs & Abs', focus:'Quad Heavy',                 cls:'b-legs',  tcls:'t-legs'},
 };
 // weekday: 0 Sun ... 6 Sat
@@ -724,34 +790,34 @@ const WORKOUTS = {
      why:"Posisi incline menempatkan biceps pada stretch dalam — variasi curl yang sangat dianjurkan Nippard untuk pertumbuhan."},
   ],
   lower:[
-    {n:"Leg Press (high foot)",eq:"Machine",m:"Hamstrings & Glutes",c:true,rec:"1 warmup + 3×10 rep",
-     how:"Posisikan kaki tinggi di platform, turunkan beban hingga lutut ~90°, dorong tanpa mengunci lutut.",
-     tip:"Kaki tinggi = lebih banyak hamstring & glute.",
-     why:"Penempatan kaki tinggi menggeser beban ke posterior chain — aman untuk overload berat."},
+    {n:"Hack Squat",eq:"Machine",m:"Quads dominant",c:true,rec:"1 warmup + 3×8–10 rep",
+     how:"Sandar di pad, kaki selebar bahu di posisi tengah platform. Turun hingga paha sejajar lantai lalu dorong naik tanpa mengunci lutut.",
+     tip:"Kaki lebih rendah di platform = lebih banyak quad. Jaga lutut sejajar dengan jari kaki.",
+     why:"Jeff Nippard merekomendasikan pendulum/hack squat sebagai pengganti terbaik squat biasa — overload quad aman tanpa tekanan punggung bawah berlebihan."},
+    {n:"Leg Press tiduran (kaki rendah)",eq:"Machine",m:"Quads & Glutes",c:true,rec:"3×10–12 rep",
+     how:"Kaki posisi rendah di platform, turunkan hingga lutut ~90°, dorong kuat tanpa mengunci lutut di atas.",
+     tip:"Kaki rendah menekankan quad. Jangan biarkan lutut kolaps ke dalam.",
+     why:"Pengganti leg extension yang tidak tersedia — kaki rendah pada leg press menggeser fokus ke quad secara efektif."},
     {n:"Lying Leg Curl",eq:"Machine",m:"Hamstrings (isolation)",c:false,rec:"3×12 rep",
-     how:"Telungkup, tekuk tumit ke arah bokong, tahan kontraksi, turunkan perlahan.",
-     tip:"Jangan angkat pinggul; jaga menempel di pad.",
-     why:"Isolasi hamstring lewat fungsi flexi lutut — pelengkap gerakan hip-hinge."},
-    {n:"Bulgarian Split Squat",eq:"Dumbbell",m:"Quads & Glutes (unilateral)",c:true,u:true,rec:"3×10 rep per kaki",
-     how:"Kaki belakang di bench, turunkan badan hingga paha depan sejajar lantai, dorong naik. "+uni+" Jika keseimbangan sulit, ganti Lunges dulu.",
-     tip:"Condongkan badan sedikit ke depan untuk lebih banyak glute.",
-     why:"Unilateral memperbaiki ketidakseimbangan & melatih quad/glute dengan stretch dalam — favorit Nippard."},
-    {n:"Hip Abductor (open)",eq:"Machine",m:"Outer Glutes",c:false,rec:"3×15 rep",
-     how:"Duduk, buka kedua kaki melawan pad, tahan sebentar, kembali dengan kontrol.",
-     tip:"Condong sedikit ke depan untuk fokus glute medius.",
-     why:"Menargetkan glute medius untuk bentuk pinggul & stabilitas."},
-    {n:"Standing Calf Raise (Leg Press)",eq:"Standing leg press",m:"Calves",c:false,rec:"4×15–20 rep",
-     how:"Dengan kaki di ujung platform, dorong dengan jari kaki untuk mengangkat tumit penuh, turunkan hingga stretch.",
-     tip:"Tahan di puncak & stretch penuh di bawah.",
-     why:"Range penuh + pause penting untuk calf — sesuai penekanan Nippard."},
+     how:"Telungkup di mesin, tekuk tumit ke arah bokong dengan kontrol, tahan kontraksi sebentar, turunkan perlahan.",
+     tip:"Jangan angkat pinggul dari pad saat curl. Fase menurun (eksentrik) sama pentingnya.",
+     why:"Jeff Nippard menjadikan lying leg curl sebagai latihan pertama lower day karena isolasi hamstring dengan stretch penuh — stimulus terbaik untuk pertumbuhan hamstring."},
+    {n:"Hip Abductor (open)",eq:"Machine",m:"Outer Glutes",c:false,rec:"3×12–15 rep",
+     how:"Duduk di mesin, buka kedua kaki melawan pad secara terkontrol, tahan sebentar di posisi terbuka, kembali dengan kontrol.",
+     tip:"Condong sedikit ke depan untuk lebih menargetkan glute medius daripada TFL.",
+     why:"Jeff Nippard memasukkan hip abduction untuk glute medius — otot yang memberikan bentuk pinggul dan stabilitas panggul saat latihan compound."},
+    {n:"Standing Calf Raise (Leg Press)",eq:"Standing leg press",m:"Calves",c:false,rec:"3×15–20 rep",
+     how:"Kaki di ujung platform leg press berdiri, dorong dengan jari kaki hingga tumit terangkat penuh, turunkan hingga stretch maksimal.",
+     tip:"Tahan di puncak 1 detik dan rasakan stretch penuh di bawah — dua titik inilah yang mendorong pertumbuhan calf.",
+     why:"Jeff Nippard menekankan full range of motion dan kontraksi penuh untuk calf — versi standing lebih efektif karena posisi lutut lurus merekrut gastrocnemius optimal."},
     {n:"Rotary Torso Machine",eq:"Machine",m:"Obliques",c:false,rec:"3×15 rep per sisi",
-     how:"Putar torso melawan tahanan dengan kontrol, kembali perlahan. Kerjakan kedua sisi.",
-     tip:"Gerakan pelan; hindari momentum.",
-     why:"Melatih oblique untuk core kuat & pinggang rapi."},
+     how:"Duduk tegak di mesin, putar torso melawan tahanan dengan kontrol penuh, kembali perlahan. Kerjakan satu sisi lalu ganti.",
+     tip:"Gerakan lambat dan terkontrol — hindari menggunakan momentum pinggul.",
+     why:"Melatih oblique untuk core yang kuat dan pinggang yang proporsional."},
     {n:"Plank",eq:"Bodyweight",m:"Core stability",c:false,rec:"3×45 detik",
-     how:"Tahan posisi plank dengan tubuh lurus, kencangkan perut & glute. Catat durasi (detik) di kolom reps.",
-     tip:"Jangan biarkan pinggul turun; napas teratur.",
-     why:"Anti-extension core yang membangun stabilitas untuk angkatan berat."},
+     how:"Tahan posisi plank dengan tubuh lurus dari kepala ke tumit, kencangkan perut dan glute. Catat durasi (detik) di kolom reps.",
+     tip:"Jangan biarkan pinggul turun atau naik. Napas teratur dan jaga posisi netral.",
+     why:"Anti-extension core — membangun stabilitas fundamental yang dibutuhkan untuk semua gerakan compound."},
   ],
   legs:[
     {n:"Hack Squat",eq:"Machine",m:"Quads dominant",c:true,rec:"1 warmup + 3×8–10 rep",
@@ -870,6 +936,7 @@ function toggleTheme(){
   const isDark = cur ? cur==='dark' : matchMedia('(prefers-color-scheme:dark)').matches;
   LS.set('gum_theme', isDark?'light':'dark');
   applyTheme();
+  if(typeof drawWeightChart==='function')drawWeightChart(); // sesuaikan warna chart dgn tema
 }
 document.getElementById('themeBtn').addEventListener('click',toggleTheme);
 document.getElementById('themeBtnSide').addEventListener('click',toggleTheme);
@@ -877,6 +944,37 @@ document.getElementById('themeBtnSide').addEventListener('click',toggleTheme);
 /* =========================================================
    JADWAL
 ========================================================= */
+const WEEK_GOAL=5; // 5 hari latihan per minggu (Sen, Sel, Kam, Jum, Sab)
+function mondayOf(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());const off=(x.getDay()+6)%7;x.setDate(x.getDate()-off);return x;}
+function renderStreak(){
+  const el=document.getElementById('streakCard'); if(!el)return;
+  const counts={};
+  sessions.forEach(s=>{const k=fmtKey(mondayOf(parseKey(s.date)));counts[k]=(counts[k]||0)+1;});
+  const todayMon=mondayOf(new Date()), thisKey=fmtKey(todayMon);
+  const thisWeek=counts[thisKey]||0;
+  // streak: minggu beruntun dgn ≥1 sesi (minggu berjalan diberi kelonggaran)
+  let streak=0; const cur=new Date(todayMon);
+  if(!counts[fmtKey(cur)])cur.setDate(cur.getDate()-7);
+  while(counts[fmtKey(cur)]){streak++;cur.setDate(cur.getDate()-7);}
+  // 6 minggu terakhir
+  const weeks=[]; const w=new Date(todayMon);
+  for(let i=0;i<6;i++){const k=fmtKey(w);weeks.unshift({k,n:counts[k]||0,cur:k===thisKey});w.setDate(w.getDate()-7);}
+  const pct=Math.min(100,Math.round(thisWeek/WEEK_GOAL*100));
+  el.innerHTML=`<div class="card">
+    <div class="streak-top">
+      <div class="streak-flame"><div class="num">🔥 ${streak}</div><div class="lbl">minggu beruntun</div></div>
+      <div class="streak-week">
+        <div class="label">Sesi minggu ini</div>
+        <div class="wk-val"><b>${thisWeek}</b> / ${WEEK_GOAL} <small>· total ${sessions.length} sesi</small></div>
+        <div class="pbar"><i style="width:${pct}%"></i></div>
+      </div>
+    </div>
+    <div class="micro" style="margin:14px 0 7px;">6 minggu terakhir</div>
+    <div class="streak-weeks">
+      ${weeks.map(wk=>`<div class="wk ${wk.n>=WEEK_GOAL?'full':wk.n>0?'has':''}" title="Minggu ${fmtShort(wk.k)}${wk.cur?' (ini)':''}">${wk.n}</div>`).join('')}
+    </div>
+  </div>`;
+}
 function renderSchedule(){
   const todayW=new Date().getDay();
   let html='';
@@ -1017,7 +1115,8 @@ const GLOW={
       <div class="src-row"><span>Parfum</span><b style="color:var(--accent-ink)">Woody / aquatic</b></div>
     </div>`,
   habit:`
-    <div class="section-title" style="margin-top:0;">🌱 Kebiasaan harian</div>
+    <div id="habitTracker"></div>
+    <div class="section-title">🌱 Kebiasaan harian</div>
     <div class="card">
       <div class="tipline" style="padding-top:0;"><span class="ni">😴</span><p><b>Tidur 7–8 jam</b> — recovery & hormon pertumbuhan terjadi saat tidur.</p></div>
       <div class="tipline" style="border-top:1px solid var(--border);"><span class="ni">💧</span><p><b>Minum 3–4 liter/hari</b> untuk hidrasi & kulit sehat.</p></div>
@@ -1057,10 +1156,56 @@ let glowSec='skin', ddSec='makan';
 function renderGlow(){
   document.querySelectorAll('#glowTabs .subtab').forEach(b=>b.classList.toggle('active',b.dataset.glow===glowSec));
   document.getElementById('glowContent').innerHTML=GLOW[glowSec];
+  if(glowSec==='habit')renderHabits();
   if(glowSec==='dd'){
     document.querySelectorAll('#ddTabs .subtab').forEach(b=>b.addEventListener('click',()=>{ddSec=b.dataset.dd;renderDD();}));
     renderDD();
   }
+}
+const HABITS=[
+  {id:'air',ic:'💧',t:'Minum 3–4 liter air'},
+  {id:'tidur',ic:'😴',t:'Tidur 7–8 jam'},
+  {id:'sunscreen',ic:'☀️',t:'Sunscreen pagi'},
+  {id:'skincare',ic:'🧴',t:'Skincare malam'},
+  {id:'gigi',ic:'🦷',t:'Sikat gigi 2×'},
+  {id:'postur',ic:'🧍',t:'Postur tegak'},
+];
+function habitData(){return LS.get('gum_habits',{});}
+function toggleHabit(id){
+  const all=habitData(), t=todayStr(), day=all[t]||{};
+  if(day[id])delete day[id]; else day[id]=true;
+  if(Object.keys(day).length)all[t]=day; else delete all[t];
+  LS.set('gum_habits',all);
+  renderHabits();
+}
+function renderHabits(){
+  const host=document.getElementById('habitTracker'); if(!host)return;
+  const all=habitData(), t=todayStr(), day=all[t]||{};
+  const done=HABITS.filter(h=>day[h.id]).length, pct=Math.round(done/HABITS.length*100);
+  const now=new Date(), days=[];
+  for(let i=6;i>=0;i--){
+    const dd=new Date(now.getFullYear(),now.getMonth(),now.getDate()-i), k=fmtKey(dd);
+    const c=HABITS.filter(h=>(all[k]||{})[h.id]).length;
+    const lvl=c===0?0:c>=HABITS.length?3:c>=HABITS.length/2?2:1;
+    days.push({k,c,lvl,cur:k===t,d:dd.getDate()});
+  }
+  host.innerHTML=`<div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="section-title" style="margin:0;">✅ Checklist hari ini</div>
+      <span class="micro"><b style="color:var(--accent-ink);font-size:14px;">${done}</b>/${HABITS.length}</span>
+    </div>
+    <div class="pbar" style="margin:9px 0 14px;"><i style="width:${pct}%"></i></div>
+    <div class="habit-list">
+      ${HABITS.map(h=>`<button class="habit ${day[h.id]?'on':''}" data-h="${h.id}">
+        <span class="hk-ic">${h.ic}</span><span class="hk-t">${h.t}</span><span class="hk-box">${day[h.id]?'✓':''}</span>
+      </button>`).join('')}
+    </div>
+    <div class="micro" style="margin:16px 0 8px;">7 hari terakhir</div>
+    <div class="habit-week">
+      ${days.map(x=>`<div class="hw ${x.cur?'cur':''}" title="${fmtShort(x.k)}: ${x.c}/${HABITS.length}"><i data-lvl="${x.lvl}"></i><span>${x.d}</span></div>`).join('')}
+    </div>
+  </div>`;
+  host.querySelectorAll('.habit').forEach(b=>b.addEventListener('click',()=>toggleHabit(b.dataset.h)));
 }
 function renderDD(){
   document.querySelectorAll('#ddTabs .subtab').forEach(b=>b.classList.toggle('active',b.dataset.dd===ddSec));
@@ -1122,7 +1267,10 @@ function renderDayDetail(){
       html+=`<div style="margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
           <span class="badge ${T.cls}">${T.label}</span>
-          <button class="micro" style="color:var(--red);font-weight:600;" onclick="delSession('${s.id}')">Hapus</button>
+          <div style="display:flex;gap:14px;">
+            <button class="micro" style="color:var(--accent-ink);font-weight:600;" onclick="openEdit('${s.id}')">Edit</button>
+            <button class="micro" style="color:var(--red);font-weight:600;" onclick="delSession('${s.id}')">Hapus</button>
+          </div>
         </div>`;
       s.exercises.forEach(ex=>{
         html+=`<div class="logged-ex"><div class="len">${esc(ex.name)}</div><div class="setline">
@@ -1147,7 +1295,7 @@ function renderDayDetail(){
 function delSession(id){
   if(!confirm('Hapus catatan sesi ini?'))return;
   sessions=sessions.filter(s=>s.id!==id);LS.set('gum_sessions',sessions);
-  renderCalendar();renderDayDetail();
+  renderCalendar();renderDayDetail();renderStreak();
 }
 document.getElementById('calPrev').onclick=()=>{calRef=new Date(calRef.getFullYear(),calRef.getMonth()-1,1);renderCalendar();};
 document.getElementById('calNext').onclick=()=>{calRef=new Date(calRef.getFullYear(),calRef.getMonth()+1,1);renderCalendar();};
@@ -1166,6 +1314,8 @@ function renderWeight(){
   const remain=(TARGET_W-cur).toFixed(1);
   document.getElementById('wProgressTxt').innerHTML = cur>=TARGET_W ? '🎉 Target tercapai!' : `${pct.toFixed(0)}% menuju target · kurang <b>${remain} kg</b> lagi`;
 
+  drawWeightChart();
+
   const wrap=document.getElementById('wHistory');
   if(!sorted.length){
     wrap.innerHTML=`<div class="empty" style="padding:24px 10px;"><span class="em-ico">⚖️</span><div class="em-title">Belum ada data</div><div class="em-sub">Catat berat badanmu rutin (mis. tiap pagi) untuk lihat tren bulking.</div></div>`;
@@ -1182,6 +1332,55 @@ function renderWeight(){
   wrap.innerHTML=`<table class="htable"><thead><tr><th>Tanggal</th><th>Berat</th><th>Perubahan</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 function delWeight(date){weights=weights.filter(w=>w.date!==date);LS.set('gum_weights',weights);renderWeight();}
+function drawWeightChart(){
+  const cv=document.getElementById('wChart'); if(!cv)return;
+  const card=document.getElementById('wChartCard');
+  const sorted=[...weights].sort((a,b)=>a.date<b.date?-1:1);
+  if(sorted.length<2){ if(card)card.style.display='none'; return; } // butuh min 2 titik
+  if(card)card.style.display='';
+  const wrap=cv.parentElement, cssW=wrap.clientWidth, cssH=wrap.clientHeight;
+  if(!cssW){ return; } // tab tersembunyi; akan digambar saat tab dibuka
+  const dpr=window.devicePixelRatio||1;
+  cv.width=cssW*dpr; cv.height=cssH*dpr;
+  const ctx=cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,cssW,cssH);
+  const cs=getComputedStyle(document.documentElement), col=n=>(cs.getPropertyValue(n)||'').trim();
+  const cAccent=col('--accent')||'#6C47FF', cMuted=col('--muted')||'#888', cBorder=col('--border-2')||'#ddd',
+        cGreen=col('--green')||'#16a34a', cSurface=col('--surface')||'#fff';
+  const padL=32,padR=14,padT=16,padB=22, plotW=cssW-padL-padR, plotH=cssH-padT-padB;
+  const vals=sorted.map(w=>w.weight);
+  let ymin=Math.min(START_W,TARGET_W,...vals), ymax=Math.max(START_W,TARGET_W,...vals);
+  const padY=(ymax-ymin)*0.12||1; ymin-=padY; ymax+=padY;
+  const X=i=> sorted.length===1? padL+plotW/2 : padL+plotW*i/(sorted.length-1);
+  const Y=v=> padT+plotH*(1-(v-ymin)/(ymax-ymin));
+  ctx.font='10px Poppins,sans-serif'; ctx.textBaseline='middle';
+  // gridlines + label sumbu Y
+  for(let s=0;s<=4;s++){
+    const v=ymin+(ymax-ymin)*s/4, yy=Y(v);
+    ctx.strokeStyle=cBorder; ctx.globalAlpha=.45; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(padL,yy); ctx.lineTo(cssW-padR,yy); ctx.stroke();
+    ctx.globalAlpha=1; ctx.fillStyle=cMuted; ctx.textAlign='right'; ctx.fillText(v.toFixed(0),padL-5,yy);
+  }
+  // garis target (78kg) putus-putus hijau
+  const yt=Y(TARGET_W);
+  ctx.setLineDash([4,4]); ctx.strokeStyle=cGreen; ctx.globalAlpha=.85; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(padL,yt); ctx.lineTo(cssW-padR,yt); ctx.stroke();
+  ctx.setLineDash([]); ctx.globalAlpha=1;
+  ctx.fillStyle=cGreen; ctx.textAlign='left'; ctx.fillText('Target '+TARGET_W,padL+3,yt-7);
+  // garis data
+  ctx.strokeStyle=cAccent; ctx.lineWidth=2.5; ctx.lineJoin='round';
+  ctx.beginPath(); sorted.forEach((w,i)=>{const xx=X(i),yy=Y(w.weight); i?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy);}); ctx.stroke();
+  // titik
+  sorted.forEach((w,i)=>{
+    const xx=X(i),yy=Y(w.weight);
+    ctx.beginPath(); ctx.arc(xx,yy,3.5,0,Math.PI*2); ctx.fillStyle=cAccent; ctx.fill();
+    ctx.lineWidth=2; ctx.strokeStyle=cSurface; ctx.stroke();
+  });
+  // label tanggal pertama & terakhir
+  ctx.fillStyle=cMuted;
+  ctx.textAlign='left';  ctx.fillText(fmtShort(sorted[0].date),padL,cssH-9);
+  ctx.textAlign='right'; ctx.fillText(fmtShort(sorted[sorted.length-1].date),cssW-padR,cssH-9);
+}
+window.addEventListener('resize',()=>{ if(document.getElementById('tt-weight').style.display!=='none')drawWeightChart(); });
 document.getElementById('wSave').onclick=()=>{
   const date=document.getElementById('wDate').value;
   const val=parseFloat(document.getElementById('wInput').value);
@@ -1193,6 +1392,50 @@ document.getElementById('wSave').onclick=()=>{
   document.getElementById('wInput').value='';
   renderWeight();
 };
+
+/* ---- Backup: export / import ---- */
+function exportData(){
+  const d=new Date();
+  const stamp=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  const payload={
+    _app:'glowupmen', _v:1, _exported:d.toISOString(),
+    gum_sessions:sessions,
+    gum_weights:weights,
+    gum_habits:LS.get('gum_habits',{}),
+    gum_theme:LS.get('gum_theme',null),
+    gum_page:LS.get('gum_page','jadwal'),
+  };
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download='glowupmen-backup-'+stamp+'.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+function importData(file){
+  const reader=new FileReader();
+  reader.onload=()=>{
+    let d;
+    try{ d=JSON.parse(reader.result); }catch(e){ alert('File tidak valid atau rusak.'); return; }
+    if(!d || (!Array.isArray(d.gum_sessions) && !Array.isArray(d.gum_weights))){ alert('File ini bukan backup GlowUp Men.'); return; }
+    if(!confirm('Pulihkan data dari file ini? Semua data saat ini akan ditimpa.')) return;
+    if(Array.isArray(d.gum_sessions)){ sessions=d.gum_sessions; LS.set('gum_sessions',sessions); }
+    if(Array.isArray(d.gum_weights)){ weights=d.gum_weights; LS.set('gum_weights',weights); }
+    if(d.gum_habits && typeof d.gum_habits==='object'){ LS.set('gum_habits',d.gum_habits); }
+    if(d.gum_theme==='light'||d.gum_theme==='dark'){ LS.set('gum_theme',d.gum_theme); } else { localStorage.removeItem('gum_theme'); }
+    applyTheme();
+    renderCalendar(); renderDayDetail(); renderWeight(); renderOverload(); renderStreak();
+    if(glowSec==='habit')renderHabits();
+    alert('Data berhasil dipulihkan ✅');
+  };
+  reader.readAsText(file);
+}
+document.getElementById('btnExport').onclick=exportData;
+document.getElementById('btnImport').onclick=()=>document.getElementById('importFile').click();
+document.getElementById('importFile').addEventListener('change',e=>{
+  if(e.target.files[0])importData(e.target.files[0]);
+  e.target.value='';
+});
 
 /* ---- Progressive overload ---- */
 function exCompound(name){
@@ -1247,9 +1490,10 @@ function setRowHTML(label,reps,weight){
     <button class="delset" onclick="this.closest('.setrow').remove();relabel(this)">✕</button>
   </div>`;
 }
-function exBlockHTML(name,sets){
+function exBlockHTML(name,sets,hint){
   return `<div class="exblock">
     <div class="exblock-head"><span class="en">${esc(name)}</span><button class="rm" onclick="this.closest('.exblock').remove()">🗑️</button></div>
+    ${hint?`<div class="exhint">↩︎ Diisi dari sesi ${hint} — tinggal sesuaikan</div>`:''}
     <div class="setrow-h"><span>Set</span><span>Reps</span><span>Berat</span><span></span></div>
     <div class="sets">${sets.map(s=>setRowHTML(s.label,s.reps,s.weight)).join('')}</div>
     <div class="set-actions">
@@ -1276,13 +1520,28 @@ function addSet(btn,kind){
   }
   relabel(block.querySelector('.setrow'));
 }
+function lastSessionFor(name){
+  // sesi terbaru yang memuat latihan ini (dengan set terisi)
+  const sorted=[...sessions].sort((a,b)=>a.date<b.date?1:-1);
+  for(const s of sorted){
+    const ex=s.exercises.find(e=>e.name===name&&e.sets&&e.sets.length);
+    if(ex)return{date:s.date,sets:ex.sets};
+  }
+  return null;
+}
 function loadTemplate(type){
   const ex=WORKOUTS[type]||[];
-  document.getElementById('mExercises').innerHTML=ex.map(e=>
-    exBlockHTML(e.n,[{label:'WU'},{label:'S1'},{label:'S2'},{label:'S3'}])
-  ).join('');
+  document.getElementById('mExercises').innerHTML=ex.map(e=>{
+    const last=lastSessionFor(e.n);
+    const sets=last?last.sets.map(s=>({label:s.label,reps:s.reps,weight:s.weight}))
+                   :[{label:'WU'},{label:'S1'},{label:'S2'},{label:'S3'}];
+    return exBlockHTML(e.n,sets,last?fmtShort(last.date):null);
+  }).join('');
 }
+let editingId=null;
 function openModal(date,type){
+  editingId=null;
+  document.getElementById('modalTitle').textContent='Catat Latihan';
   document.getElementById('mDate').value=date||todayStr();
   document.getElementById('mType').value=type||'pull';
   document.getElementById('mNotes').value='';
@@ -1291,7 +1550,19 @@ function openModal(date,type){
   modal.classList.add('show');
   document.body.style.overflow='hidden';
 }
-function closeModal(){modal.classList.remove('show');document.body.style.overflow='';}
+function openEdit(id){
+  const s=sessions.find(x=>x.id===id); if(!s)return;
+  editingId=id;
+  document.getElementById('modalTitle').textContent='Edit Latihan';
+  document.getElementById('mDate').value=s.date;
+  document.getElementById('mType').value=s.type;
+  document.getElementById('mNotes').value=s.notes||'';
+  document.getElementById('mNewEx').value='';
+  document.getElementById('mExercises').innerHTML=s.exercises.map(ex=>exBlockHTML(ex.name,ex.sets)).join('');
+  modal.classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){modal.classList.remove('show');document.body.style.overflow='';editingId=null;rtStopTimer();}
 document.getElementById('mType').addEventListener('change',e=>loadTemplate(e.target.value));
 document.getElementById('mAddEx').onclick=()=>{
   const inp=document.getElementById('mNewEx');const v=inp.value.trim();if(!v)return;
@@ -1319,21 +1590,76 @@ document.getElementById('mSave').onclick=()=>{
     if(sets.length)exercises.push({name,sets});
   });
   if(!exercises.length){alert('Isi minimal satu set (reps / berat) dulu ya.');return;}
-  const id='s_'+date+'_'+Math.floor(performance.now())+'_'+sessions.length;
-  sessions.push({id,date,type,exercises,notes:document.getElementById('mNotes').value.trim()});
+  const notes=document.getElementById('mNotes').value.trim();
+  if(editingId){
+    const i=sessions.findIndex(x=>x.id===editingId);
+    if(i>-1)sessions[i]={...sessions[i],date,type,exercises,notes};
+  }else{
+    const id='s_'+date+'_'+Math.floor(performance.now())+'_'+sessions.length;
+    sessions.push({id,date,type,exercises,notes});
+  }
   LS.set('gum_sessions',sessions);
   closeModal();
   selDate=date;
   calRef=parseKey(date);
-  renderCalendar();renderDayDetail();
+  renderCalendar();renderDayDetail();renderStreak();
 };
+
+/* =========================================================
+   REST TIMER (di dalam modal catat latihan)
+========================================================= */
+let rtInterval=null, rtCtx=null;
+function rtFmt(s){const m=Math.floor(s/60),ss=s%60;return m>0?(m+':'+String(ss).padStart(2,'0')):(ss+'s');}
+function rtAudio(){
+  try{ if(!rtCtx)rtCtx=new (window.AudioContext||window.webkitAudioContext)();
+    if(rtCtx.state==='suspended')rtCtx.resume(); }catch(e){}
+  return rtCtx;
+}
+function rtBeep(){
+  const ctx=rtAudio(); if(!ctx)return;
+  [0,0.18].forEach(off=>{
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type='sine';o.frequency.value=880;o.connect(g);g.connect(ctx.destination);
+    const t=ctx.currentTime+off;
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(0.35,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+0.14);
+    o.start(t);o.stop(t+0.15);
+  });
+}
+function rtStopTimer(){
+  if(rtInterval){clearInterval(rtInterval);rtInterval=null;}
+  const d=document.getElementById('rtDisplay');
+  if(d){d.textContent='Rest';d.classList.remove('run','done');}
+  document.querySelectorAll('.rt-presets button').forEach(b=>b.classList.remove('active'));
+}
+function rtStart(sec){
+  rtStopTimer();
+  rtAudio(); // siapkan audio dari gesture klik agar bunyi tak diblokir
+  let remain=sec;
+  const d=document.getElementById('rtDisplay');
+  d.classList.add('run');d.textContent=rtFmt(remain);
+  rtInterval=setInterval(()=>{
+    remain--;
+    if(remain<=0){
+      clearInterval(rtInterval);rtInterval=null;
+      d.classList.remove('run');d.classList.add('done');d.textContent='Selesai!';
+      rtBeep(); if(navigator.vibrate)navigator.vibrate([200,100,200]);
+    }else{ d.textContent=rtFmt(remain); }
+  },1000);
+}
+document.querySelectorAll('.rt-presets button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.rt-presets button').forEach(x=>x.classList.toggle('active',x===b));
+  rtStart(+b.dataset.sec);
+}));
+document.getElementById('rtStop').onclick=rtStopTimer;
 
 /* =========================================================
    INIT
 ========================================================= */
 function init(){
   applyTheme();
-  renderSchedule();
+  renderSchedule();renderStreak();
   renderGuideTabs();renderGuide();
   renderGizi();
   renderGlow();
