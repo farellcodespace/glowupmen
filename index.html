@@ -848,6 +848,7 @@ function go(page){
   document.getElementById('pageTitle').textContent=t;
   document.getElementById('pageSub').textContent=s;
   window.scrollTo({top:0});
+  LS.set('gum_page',page); // ingat halaman aktif agar bertahan setelah refresh
 }
 document.querySelectorAll('.nav-btn,.side-btn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
 
@@ -1338,6 +1339,8 @@ function init(){
   renderCalendar();renderDayDetail();
   document.getElementById('wDate').value=todayStr();
   matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{if(!LS.get('gum_theme',null))applyTheme();});
+  const savedPage=LS.get('gum_page','jadwal'); // kembali ke halaman terakhir setelah refresh
+  go(PAGE_META[savedPage]?savedPage:'jadwal');
 }
 init();
 
