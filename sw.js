@@ -1,5 +1,5 @@
 // Bump versi ini setiap deploy besar agar cache lama otomatis dibersihkan.
-const CACHE_NAME = 'glowupmen-v4';
+const CACHE_NAME = 'glowupmen-v5';
 const ASSETS = ['/', '/index.html', '/manifest.json', '/icon-192.png', '/icon-512.png'];
 
 self.addEventListener('install', e => {
