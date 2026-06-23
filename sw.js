@@ -1,5 +1,5 @@
 // Bump versi ini setiap deploy besar agar cache lama otomatis dibersihkan.
-const CACHE_NAME = 'glowupmen-v3';
+const CACHE_NAME = 'glowupmen-v4';
 const ASSETS = ['/', '/index.html', '/manifest.json', '/icon-192.png', '/icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -12,6 +12,17 @@ self.addEventListener('activate', e => {
     caches.keys()
       .then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
+  );
+});
+
+// Klik notifikasi alarm istirahat → fokuskan tab yang sudah ada atau buka app.
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  e.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+      for (const c of list) { if ('focus' in c) return c.focus(); }
+      if (clients.openWindow) return clients.openWindow('/');
+    })
   );
 });
 
